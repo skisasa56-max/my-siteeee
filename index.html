@@ -53,14 +53,12 @@
     100% { opacity: 0.25; transform: scale(1.1); }
   }
 
-  /* AUTH */
   .auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
   .auth-card { background: var(--panel); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 20px; padding: 40px; width: 100%; max-width: 440px; box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.05); }
   .auth-tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
   .auth-tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; color: var(--muted); font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 1px; border-radius: 8px; transition: 0.3s; }
   .auth-tab.active { color: var(--gold); background: rgba(251,191,36,0.1); text-shadow: 0 0 10px rgba(251,191,36,0.5); }
 
-  /* TOPBAR */
   .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(16px); background: rgba(5, 8, 15, 0.85); border-bottom: 1px solid var(--border); }
   .topbar-inner { max-width: 1240px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
   .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; flex-shrink: 0; }
@@ -84,7 +82,6 @@
 
   .badge-creator { background: linear-gradient(90deg, #fbbf24, #fff, #fbbf24); -webkit-background-clip: text; background-clip: text; color: transparent; font-family: 'Oswald', sans-serif; font-weight: 700; text-shadow: 0 0 20px rgba(251,191,36,.6); letter-spacing: 1px; }
   .badge-moderator { color: #d8b4fe; font-family: 'Oswald', sans-serif; font-weight: 700; text-shadow: 0 0 15px rgba(168,85,247,.5); letter-spacing: 1px; }
-  .creator-glow { border-color: var(--gold) !important; box-shadow: 0 0 20px rgba(251,191,36,.4) !important; }
 
   .page { max-width: 1240px; margin: 0 auto; padding: 30px 20px 80px; }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
@@ -99,6 +96,7 @@
   .btn-primary, .btn-secondary, .btn-danger, .btn-admin, .btn-sm { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 10px; cursor: pointer; border: none; transition: 0.2s; text-decoration: none; }
   .btn-primary { color: #05080f; background: linear-gradient(180deg, #fcd34d, #fbbf24 45%, #d97706); box-shadow: 0 4px 15px rgba(251,191,36,.3); }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(251,191,36,.5); }
+  .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
   .btn-secondary { color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); }
   .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--text); }
   .btn-danger { color: #fff; background: rgba(239,68,68,.2); border: 1px solid rgba(239,68,68,.5); }
@@ -167,110 +165,77 @@
   .quest-desc { font-size: 14px; color: var(--muted); margin-bottom: 15px; }
   .quest-reward { font-weight: 800; color: var(--green); font-size: 16px; margin-bottom: 15px; display: block; }
 
-  /* HERO VIDEO */
-  .hero-video-wrap {
-    position: relative;
-    width: 100%;
-    height: 380px;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 30px;
-    border: 1px solid var(--border);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 100px rgba(0,0,0,0.5);
-  }
-  .hero-video {
-    position: absolute;
-    top: 50%; left: 50%;
-    min-width: 100%; min-height: 100%;
-    width: auto; height: auto;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
-    z-index: 1;
-    filter: brightness(0.6) contrast(1.1);
-  }
-  .hero-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background: linear-gradient(180deg, rgba(5,8,15,0.2) 0%, rgba(5,8,15,0.85) 100%);
-    display: flex;
-    align-items: flex-end;
-    padding: 40px;
-    pointer-events: none;
-  }
-  .hero-content {
-    z-index: 3;
-    pointer-events: auto;
-  }
-  .hero-content h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 42px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    text-shadow: 0 0 20px rgba(59,130,246,0.8), 0 4px 10px rgba(0,0,0,0.9);
-  }
-  .hero-content p {
-    font-size: 16px;
-    color: #cbd5e1;
-    max-width: 500px;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.9);
-    font-weight: 600;
-  }
-  /* Мигалка */
-  .siren-flash {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 6px;
-    background: linear-gradient(90deg, transparent 0%, var(--blue) 20%, var(--blue) 45%, transparent 50%, var(--red) 55%, var(--red) 80%, transparent 100%);
-    z-index: 10;
-    animation: sirenMove 1.2s infinite linear;
-    opacity: 0.9;
-    box-shadow: 0 0 20px var(--blue), 0 0 20px var(--red);
-  }
-  @keyframes sirenMove {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
+  .hero-video-wrap { position: relative; width: 100%; height: 380px; border-radius: 20px; overflow: hidden; margin-bottom: 30px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 100px rgba(0,0,0,0.5); }
+  .hero-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; z-index: 1; filter: brightness(0.6) contrast(1.1); }
+  .hero-overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, rgba(5,8,15,0.2) 0%, rgba(5,8,15,0.85) 100%); display: flex; align-items: flex-end; padding: 40px; pointer-events: none; }
+  .hero-content { z-index: 3; pointer-events: auto; }
+  .hero-content h1 { font-family: 'Oswald', sans-serif; font-size: 42px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; text-shadow: 0 0 20px rgba(59,130,246,0.8), 0 4px 10px rgba(0,0,0,0.9); }
+  .hero-content p { font-size: 16px; color: #cbd5e1; max-width: 500px; text-shadow: 0 2px 5px rgba(0,0,0,0.9); font-weight: 600; }
+  .siren-flash { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, transparent 0%, var(--blue) 20%, var(--blue) 45%, transparent 50%, var(--red) 55%, var(--red) 80%, transparent 100%); z-index: 10; animation: sirenMove 1.2s infinite linear; opacity: 0.9; box-shadow: 0 0 20px var(--blue), 0 0 20px var(--red); }
+  @keyframes sirenMove { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
   @media (max-width: 768px) {
     .hero-video-wrap { height: 250px; }
     .hero-content h1 { font-size: 28px; }
     .hero-content { padding: 20px; }
     .hero-overlay { padding: 20px; }
   }
+
+  .empty { color: var(--muted); font-size: 14px; padding: 10px 0; }
+  .hidden { display: none !important; }
+  .setup-code { background: rgba(0,0,0,.6); border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-family: monospace; font-size: 12px; color: #93c5fd; overflow-x: auto; white-space: pre; margin-top: 12px; }
 </style>
 </head>
 <body>
 
-<div id="authRoot" class="auth-screen" style="display:none;">
+<div id="loading" class="auth-screen">
+  <div class="auth-card" style="text-align:center; font-family:'Oswald'; letter-spacing:2px; color:var(--muted);">
+    ЗАГРУЗКА СИСТЕМЫ...
+  </div>
+</div>
+
+<div id="setupWarn" class="auth-screen hidden">
+  <div class="auth-card" style="border-color:var(--red);">
+    <h2 style="font-family:'Oswald'; color:var(--red); margin-bottom:14px; letter-spacing:1px;">FIREBASE НЕ НАСТРОЕН</h2>
+    <p style="font-size:14px; color:var(--muted); line-height:1.6;">
+      В файле <b>index.html</b> найди блок <code>const firebaseConfig = &#123; ... &#125;</code>
+      и вставь туда значения из Firebase Console → Project settings → Your apps.
+    </p>
+    <div class="setup-code">const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...firebaseapp.com",
+  projectId: "...",
+  storageBucket: "...appspot.com",
+  messagingSenderId: "...",
+  appId: "..."
+};</div>
+  </div>
+</div>
+
+<div id="authRoot" class="auth-screen hidden">
   <div class="auth-card">
     <div style="text-align:center; margin-bottom:30px;">
       <div class="shield" style="margin:0 auto 15px; width:60px; height:65px; font-size:16px;">LVPD</div>
       <h2 style="font-family:'Oswald'; font-size:24px; letter-spacing:1px;">ВХОД В СИСТЕМУ</h2>
     </div>
     <div class="auth-tabs">
-      <div class="auth-tab active" onclick="switchAuthTab('login')">Вход</div>
-      <div class="auth-tab" onclick="switchAuthTab('register')">Регистрация</div>
+      <div class="auth-tab active" data-tab="login">Вход</div>
+      <div class="auth-tab" data-tab="register">Регистрация</div>
     </div>
-    <form id="loginForm" onsubmit="handleLogin(event)">
+    <form id="loginForm">
       <div class="form-group">
         <label>Игровой ник</label>
-        <input type="text" id="loginName" class="input" required placeholder="Nickname" autocomplete="off">
+        <input type="text" id="loginName" class="input" required placeholder="Nickname" autocomplete="username">
       </div>
       <div class="form-group">
         <label>Пароль</label>
-        <input type="password" id="loginPass" class="input" required placeholder="••••••">
+        <input type="password" id="loginPass" class="input" required placeholder="••••••" autocomplete="current-password">
       </div>
       <button type="submit" class="btn-primary" style="width:100%; margin-top:10px;">Войти</button>
-      <div style="text-align:center; margin-top:20px;">
-        <a href="#" onclick="loginAsGuest(event)" style="color:var(--muted); font-size:13px; font-weight:600; text-decoration:underline;">Войти как гость (только чтение)</a>
-      </div>
     </form>
-    <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
+    <form id="registerForm" class="hidden">
       <div class="form-group">
         <label>Игровой ник</label>
-        <input type="text" id="regName" class="input" required minlength="2" placeholder="Riley Blackwood">
+        <input type="text" id="regName" class="input" required minlength="2" placeholder="Riley Blackwood" autocomplete="off">
       </div>
       <div class="form-group">
         <label>Статический ID</label>
@@ -278,33 +243,26 @@
       </div>
       <div class="form-group">
         <label>Желаемое звание</label>
-        <select id="regRank" class="input">
-          <option value="Рядовой">Рядовой</option>
-          <option value="Сержант">Сержант</option>
-          <option value="Ст. Сержант">Ст. Сержант</option>
-          <option value="Лейтенант">Лейтенант</option>
-          <option value="Ст. Лейтенант">Ст. Лейтенант</option>
-          <option value="Капитан">Капитан</option>
-          <option value="Майор">Майор</option>
-          <option value="Подполковник">Подполковник</option>
-          <option value="Полковник">Полковник</option>
-          <option value="Шериф">Шериф</option>
-        </select>
+        <select id="regRank" class="input"></select>
       </div>
       <div class="form-group">
         <label>Ссылка на статистику (обязательно)</label>
         <input type="url" id="regStats" class="input" required placeholder="https://...">
       </div>
       <div class="form-group">
-        <label>Пароль</label>
-        <input type="password" id="regPass" class="input" required minlength="4">
+        <label>Пароль (минимум 6 символов)</label>
+        <input type="password" id="regPass" class="input" required minlength="6" autocomplete="new-password">
       </div>
       <button type="submit" class="btn-primary" style="width:100%; margin-top:10px;">Отправить заявку</button>
     </form>
   </div>
 </div>
 
-<div id="appRoot" style="display:none;">
+<div id="pendingRoot" class="auth-screen hidden">
+  <div class="auth-card" id="pendingBox"></div>
+</div>
+
+<div id="appRoot" class="hidden">
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="#home">
@@ -323,12 +281,12 @@
         <a href="#admin" id="nav-admin" style="display:none; color:var(--purple);">Админ-панель</a>
       </nav>
       <div class="user">
-        <a href="https://vk.com/morgan.miller" target="_blank" class="support-link">🛠 Тех. поддержка</a>
+        <a href="https://vk.com/morgan.miller" target="_blank" rel="noopener" class="support-link">🛠 Тех. поддержка</a>
         <div class="balance">
           <span class="balance-label">Очки</span>
           <span class="balance-value" id="topBalance">0</span>
         </div>
-        <div class="avatar" id="topAvatar" title="Выйти" onclick="logout()">?</div>
+        <div class="avatar" id="topAvatar" title="Выйти" data-action="logout">?</div>
       </div>
     </div>
   </header>
@@ -336,796 +294,12 @@
 </div>
 
 <div class="toast" id="toast"></div>
-
-<script>
-const STORAGE_KEY = 'lvpd_v7';
-let state = {
-  users: {},
-  currentUser: null,
-  rouletteHistory: [],
-  pendingPrizes: [],
-  rankRequests: [],
-  weeklyQuests: [],
-  weeklyClaims: [],
-  currentWeek: ''
-};
-
-function getWeekKey() {
-  const d = new Date();
-  const day = d.getDay() || 7;
-  d.setDate(d.getDate() - day + 1);
-  return d.toISOString().slice(0, 10);
-}
-
-function checkWeeklyReset() {
-  const wk = getWeekKey();
-  if (state.currentWeek !== wk) {
-    state.currentWeek = wk;
-    state.weeklyClaims = [];
-    saveState();
-  }
-}
-
-function loadState() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) state = JSON.parse(saved);
-  
-  if (!state.users['Riley Blackwood']) {
-    state.users['Riley Blackwood'] = {
-      name: 'Riley Blackwood', pass: 'admin', id: '4361956', rank: 'Полковник',
-      role: 'creator', statsLink: 'vk.com/morgan.miller', status: 'approved',
-      points: 999999, reports: [], lastSeen: 0
-    };
-  }
-  
-  if (!state.currentWeek) state.currentWeek = getWeekKey();
-  
-  if (state.currentWeek !== getWeekKey()) {
-    state.currentWeek = getWeekKey();
-    state.weeklyClaims = [];
-  }
-  
-  saveState();
-}
-function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-
-const $ = (id) => document.getElementById(id);
-const escapeHtml = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-const initials = (name) => (name || '?').split(/[\s_.-]+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || '?';
-
-function toast(html, type = '') {
-  const el = $('toast');
-  el.className = 'toast ' + type;
-  el.innerHTML = html;
-  requestAnimationFrame(() => el.classList.add('show'));
-  clearTimeout(el._timer);
-  el._timer = setTimeout(() => el.classList.remove('show'), 4000);
-}
-
-/* AUTH */
-function switchAuthTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-  if (tab === 'login') {
-    document.querySelectorAll('.auth-tab')[0].classList.add('active');
-    $('loginForm').style.display = 'block';
-    $('registerForm').style.display = 'none';
-  } else {
-    document.querySelectorAll('.auth-tab')[1].classList.add('active');
-    $('loginForm').style.display = 'none';
-    $('registerForm').style.display = 'block';
-  }
-}
-
-function handleLogin(e) {
-  e.preventDefault();
-  const name = $('loginName').value.trim();
-  const u = state.users[name];
-  if (!u || u.pass !== $('loginPass').value) return toast('Неверный ник или пароль', 'err');
-  if (u.status === 'pending') return toast('Аккаунт еще не одобрен Создателем', 'gold');
-  if (u.status === 'rejected') return toast('Ваша заявка отклонена', 'err');
-  state.currentUser = name;
-  saveState();
-  checkAuth();
-}
-
-function handleRegister(e) {
-  e.preventDefault();
-  const name = $('regName').value.trim();
-  if (state.users[name]) return toast('Этот ник уже занят', 'err');
-  state.users[name] = {
-    name, pass: $('regPass').value, id: $('regId').value, rank: $('regRank').value,
-    role: 'user', statsLink: $('regStats').value, status: 'pending',
-    points: 0, reports: [], lastSeen: 0
-  };
-  saveState();
-  toast('Заявка отправлена! Ожидайте одобрения.', 'success');
-  switchAuthTab('login');
-}
-
-function loginAsGuest(e) {
-  e.preventDefault();
-  state.currentUser = 'GUEST';
-  saveState();
-  checkAuth();
-}
-
-function logout() {
-  state.currentUser = null;
-  saveState();
-  checkAuth();
-}
-
-function checkAuth() {
-  if (!state.currentUser) {
-    $('authRoot').style.display = 'flex';
-    $('appRoot').style.display = 'none';
-  } else {
-    $('authRoot').style.display = 'none';
-    $('appRoot').style.display = 'block';
-    if (state.currentUser !== 'GUEST') {
-      state.users[state.currentUser].lastSeen = Date.now();
-      saveState();
-    }
-    checkWeeklyReset();
-    render();
-  }
-}
-
-function getCurrentUser() {
-  if (state.currentUser === 'GUEST') return { name: 'Гость', rank: 'Гость', role: 'guest', points: 0, reports: [] };
-  return state.users[state.currentUser];
-}
-
-/* RENDER */
-let currentAdminTab = 'users';
-
-function render() {
-  checkWeeklyReset();
-  const hash = window.location.hash || '#home';
-  const u = getCurrentUser();
-  
-  $('topBalance').textContent = u.points || 0;
-  $('topAvatar').textContent = initials(u.name);
-  
-  if (u.role === 'creator' || u.role === 'moderator') $('nav-admin').style.display = 'block';
-  else $('nav-admin').style.display = 'none';
-
-  document.querySelectorAll('.nav a').forEach(a => {
-    if (a.getAttribute('href') === hash) a.classList.add('active');
-    else a.classList.remove('active');
-  });
-
-  const app = $('app');
-  if (hash === '#home') app.innerHTML = renderHome();
-  else if (hash === '#reports') app.innerHTML = renderReports();
-  else if (hash === '#roulette') { app.innerHTML = renderRoulette(); initRouletteTape(); }
-  else if (hash === '#weekly') app.innerHTML = renderWeekly();
-  else if (hash === '#profile') app.innerHTML = renderProfile();
-  else if (hash === '#admin') app.innerHTML = renderAdmin();
-  else app.innerHTML = renderHome();
-}
-
-function renderHome() {
-  const u = getCurrentUser();
-  const isCreator = u.role === 'creator';
-  return `
-    <!-- ВИДЕО-ПОГОНЯ -->
-    <div class="hero-video-wrap">
-      <video class="hero-video" autoplay loop muted playsinline>
-        <!-- Бесплатное видео ночной погони с мигалками (Pexels) -->
-        <source src="https://videos.pexels.com/video-files/853800/853800-hd_1920_1080_30fps.mp4" type="video/mp4">
-      </video>
-      <div class="siren-flash"></div>
-      <div class="hero-overlay">
-        <div class="hero-content">
-          <h1 class="${isCreator ? 'badge-creator' : ''}" style="color:#fff;">
-            ${isCreator ? '👑 ДОБРО ПОЖАЛОВАТЬ, СОЗДАТЕЛЬ' : 'ПРИВЕТСТВУЕМ, ' + escapeHtml(u.name).toUpperCase()}
-          </h1>
-          <p>Система управления активностью фракции LVPD • Absolute Platinum</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <section class="card">
-        <div class="card-head"><h2>Оперативная сводка</h2></div>
-        <p style="font-size:15px; color:var(--muted); line-height:1.6; margin-bottom:20px;">
-          Добро пожаловать на портал LVPD. Здесь вы можете сдавать отчёты о сменах, крутить рулетку, выполнять задания и получать звания.
-        </p>
-        <div style="display:flex; gap:15px; flex-wrap:wrap;">
-          ${u.role === 'guest' ? '<button class="btn-primary" onclick="logout()">Войти в систему</button>' : '<button class="btn-primary" onclick="openReportModal()">Сдать отчёт</button>'}
-          <a href="#roulette" class="btn-secondary">В рулетку</a>
-        </div>
-      </section>
-      <section class="card">
-        <div class="card-head"><h2>Статус дежурства</h2></div>
-        <div class="admin-item" style="margin-bottom:0; background:rgba(59,130,246,0.05); border-color:var(--blue);">
-          <div class="admin-info">
-            <div class="admin-name ${isCreator ? 'badge-creator' : ''}">${escapeHtml(u.name)} ${isCreator ? '👑' : (u.role === 'moderator' ? '🛡' : '')}</div>
-            <div class="admin-sub">Звание: ${escapeHtml(u.rank)} | ID: ${escapeHtml(u.id || '-')}</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-size:20px; color:var(--green); font-weight:800;">🟢 НА СВЯЗИ</div>
-          </div>
-        </div>
-      </section>
-    </div>
-  `;
-}
-
-function renderProfile() {
-  const u = getCurrentUser();
-  if (u.role === 'guest') return `<div class="card empty">Гостевой режим. Войдите для просмотра.</div>`;
-  
-  const isCreator = u.role === 'creator';
-  const isMod = u.role === 'moderator';
-  let badge = isCreator ? `<span class="badge-creator" style="font-size:20px; margin-left:15px;">👑 СОЗДАТЕЛЬ</span>` : (isMod ? `<span class="badge-moderator" style="font-size:20px; margin-left:15px;">🛡 МОДЕРАТОР</span>` : '');
-
-  return `
-    <div class="card" style="display:flex; gap:24px; align-items:center; flex-wrap:wrap; ${isCreator ? 'border-color:var(--gold); box-shadow:0 0 40px rgba(251,191,36,.15);' : ''}">
-      <div class="avatar" style="width:90px; height:90px; font-size:30px; border:3px solid ${isCreator ? 'var(--gold)' : 'var(--border)'};">${initials(u.name)}</div>
-      <div style="flex:1;">
-        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:10px;">
-          <h1 style="font-family:'Oswald'; font-size:32px; font-weight:700; letter-spacing:1px;">${escapeHtml(u.name).toUpperCase()}</h1>
-          ${badge}
-        </div>
-        <div style="color:var(--muted); font-size:15px; margin-top:8px;">
-          Звание: <strong style="color:var(--text);">${escapeHtml(u.rank)}</strong> | ID: <strong style="color:var(--text);">${escapeHtml(u.id || '-')}</strong>
-        </div>
-      </div>
-      <div class="balance" style="padding:20px 30px; border-radius:16px;">
-        <span class="balance-label">Баланс очков</span>
-        <span class="balance-value" style="font-size:36px;">${u.points}</span>
-      </div>
-    </div>
-
-    <div class="stats-grid" style="margin-top:24px;">
-      <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-value">${u.reports.filter(r=>r.status==='approved').reduce((s,r)=>s+r.hours,0)}</div><div class="stat-label">Часов</div></div>
-      <div class="stat-card"><div class="stat-icon">💼</div><div class="stat-value">${u.reports.filter(r=>r.status==='approved').length}</div><div class="stat-label">Смен</div></div>
-      <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value">${u.reports.length}</div><div class="stat-label">Отчётов</div></div>
-      <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-value">${u.reports.filter(r=>r.status==='pending').length}</div><div class="stat-label">На проверке</div></div>
-    </div>
-
-    <div class="card" style="margin-top:24px;">
-      <div class="card-head"><h2>Действия</h2></div>
-      <div style="display:flex; gap:15px; flex-wrap:wrap;">
-        <button class="btn-secondary" onclick="openRankChangeModal()">📈 Запросить повышение</button>
-        ${isCreator ? `<button class="btn-admin" onclick="location.hash='#admin'">Перейти в Админ-панель</button>` : ''}
-      </div>
-    </div>
-  `;
-}
-
-function renderReports() {
-  const u = getCurrentUser();
-  if (u.role === 'guest') return `<div class="card empty">Гостям недоступно.</div>`;
-  
-  let html = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:15px;">
-    <h1 style="font-family:'Oswald'; font-size:28px; letter-spacing:1px;">МОИ ОТЧЁТЫ</h1>
-    <button class="btn-primary" onclick="openReportModal()">+ Сдать отчёт</button>
-  </div>`;
-
-  if (!u.reports.length) return html + `<div class="card empty">Отчётов пока нет.</div>`;
-
-  html += u.reports.map(r => `
-    <div class="report-item">
-      <div class="report-top">
-        <span class="report-type">${escapeHtml(r.type)}</span>
-        <span class="report-status ${r.status}">
-          ${r.status === 'approved' ? '✓ Проверен' : r.status === 'pending' ? '⏳ На проверке' : '✕ Отклонён'}
-        </span>
-        ${r.status === 'approved' ? `<span style="color:var(--gold); font-weight:800; font-family:'Oswald';">+${r.points} ОЧКОВ</span>` : ''}
-        <span class="report-date">${new Date(r.date).toLocaleDateString('ru-RU')} | ${r.hours}ч</span>
-      </div>
-      <div class="report-desc">${escapeHtml(r.desc)}</div>
-      ${r.proof ? `<div style="font-size:12px; margin-top:10px;"><a href="${escapeHtml(r.proof)}" target="_blank" style="color:var(--blue); font-weight:600;">🔗 Ссылка на доказательства</a></div>` : ''}
-    </div>
-  `).join('');
-  return html;
-}
-
-function renderWeekly() {
-  const u = getCurrentUser();
-  if (u.role === 'guest') return `<div class="card empty">Гостям недоступно.</div>`;
-
-  const myClaims = state.weeklyClaims.filter(c => c.userName === u.name);
-  
-  let questsHtml = state.weeklyQuests.map(q => {
-    const claim = myClaims.find(c => c.questId === q.id);
-    
-    let action = '';
-    if (claim) {
-      if (claim.status === 'approved') action = `<div style="color:var(--green); font-weight:800;">✓ ВЫПОЛНЕНО (+${q.reward} очков)</div>`;
-      else if (claim.status === 'pending') action = `<div style="color:var(--gold); font-weight:800;">⏳ НА ПРОВЕРКЕ</div>`;
-      else action = `<div style="color:var(--red); font-weight:800;">✕ ОТКЛОНЕНО</div>`;
-    } else {
-      action = `<button class="btn-primary" onclick="openSubmitQuestModal('${q.id}')">Отправить на проверку</button>`;
-    }
-
-    return `
-      <div class="quest-card">
-        <div class="quest-title">${escapeHtml(q.title)}</div>
-        <div class="quest-desc">${escapeHtml(q.desc)}</div>
-        <span class="quest-reward">Награда: +${q.reward} очков</span>
-        ${action}
-      </div>
-    `;
-  }).join('') || '<div class="empty">Заданий на эту неделю пока нет.</div>';
-
-  return `
-    <h1 style="font-family:'Oswald'; font-size:28px; margin-bottom:24px; letter-spacing:1px;">ЕЖЕНЕДЕЛЬНЫЕ ЗАДАНИЯ</h1>
-    <p style="color:var(--muted); margin-bottom:20px; font-size:14px;">Задания обновляются каждый понедельник. Прикрепите ссылку на доказательство (скриншот) при отправке.</p>
-    <div class="grid-2" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
-      ${questsHtml}
-    </div>
-  `;
-}
-
-/* ADMIN PANEL */
-function renderAdmin() {
-  const u = getCurrentUser();
-  if (u.role !== 'creator' && u.role !== 'moderator') return '<div class="card">Доступ запрещен</div>';
-
-  let content = '';
-  if (currentAdminTab === 'users') {
-    const allUsers = Object.values(state.users);
-    const pendingUsers = allUsers.filter(x => x.status === 'pending');
-    const otherUsers = allUsers.filter(x => x.status !== 'pending');
-
-    let usersHtml = '';
-    if (pendingUsers.length) {
-      usersHtml += `<div style="margin-bottom:20px;"><h3 style="font-family:'Oswald'; color:var(--gold); margin-bottom:12px;">⏳ Ожидают подтверждения (${pendingUsers.length})</h3>`;
-      usersHtml += pendingUsers.map(user => `
-        <div class="admin-item pending">
-          <div class="admin-info">
-            <div class="admin-name">${escapeHtml(user.name)}</div>
-            <div class="admin-sub">${escapeHtml(user.rank)} | ID: ${escapeHtml(user.id)} | Стата: <a href="${escapeHtml(user.statsLink)}" target="_blank" style="color:var(--blue)">Ссылка</a></div>
-          </div>
-          <div class="admin-actions">
-            <button class="btn-primary btn-sm" onclick="approveUser('${user.name}')">✓ Одобрить</button>
-            <button class="btn-danger btn-sm" onclick="rejectUser('${user.name}')">✕ Отклонить</button>
-          </div>
-        </div>
-      `).join('');
-      usersHtml += `</div>`;
-    }
-    usersHtml += `<div><h3 style="font-family:'Oswald'; color:var(--green); margin-bottom:12px;">✅ Одобренные аккаунты (${otherUsers.length})</h3>`;
-    usersHtml += otherUsers.map(user => {
-      const isMod = user.role === 'moderator';
-      const isCreator = user.role === 'creator';
-      let actions = '';
-      if (isCreator) actions = '<span style="color:var(--gold); font-weight:800;">СОЗДАТЕЛЬ</span>';
-      else if (u.role === 'creator') {
-        actions = `<button class="btn-secondary btn-sm" onclick="toggleMod('${user.name}')">${isMod ? 'Снять модератора' : 'Сделать модером'}</button>`;
-      }
-      return `
-        <div class="admin-item">
-          <div class="admin-info">
-            <div class="admin-name">${escapeHtml(user.name)} ${isCreator ? '👑' : (isMod ? '🛡' : '')}</div>
-            <div class="admin-sub">${escapeHtml(user.rank)} | ID: ${escapeHtml(user.id)} | ${user.status === 'approved' ? '<span style="color:var(--green)">Одобрен</span>' : '<span style="color:var(--red)">Отклонен</span>'}</div>
-          </div>
-          <div class="admin-actions">${actions}</div>
-        </div>`;
-    }).join('');
-    usersHtml += `</div>`;
-    content = `<div class="card-head"><h2>Управление аккаунтами</h2></div>${usersHtml}`;
-  } 
-  else if (currentAdminTab === 'reports') {
-    let allReports = [];
-    Object.values(state.users).forEach(user => {
-      user.reports.filter(r => r.status === 'pending').forEach(r => allReports.push({...r, userName: user.name}));
-    });
-    const html = allReports.map(r => `
-      <div class="admin-item">
-        <div class="admin-info">
-          <div class="admin-name">${escapeHtml(r.userName)}</div>
-          <div class="admin-sub">${r.date} | ${r.hours}ч | ${escapeHtml(r.desc)}</div>
-          ${r.proof ? `<div style="font-size:12px; margin-top:5px;"><a href="${escapeHtml(r.proof)}" target="_blank" style="color:var(--blue)">🔗 Доказательства</a></div>` : ''}
-        </div>
-        <div class="admin-actions">
-          <input type="number" id="pts_${r.id}" placeholder="Очки" class="input" style="width:90px; padding:8px;">
-          <button class="btn-primary btn-sm" onclick="approveReport('${r.userName}', '${r.id}')">Одобрить</button>
-          <button class="btn-danger btn-sm" onclick="rejectReport('${r.userName}', '${r.id}')">Отклонить</button>
-        </div>
-      </div>
-    `).join('') || '<div class="empty">Нет отчётов на проверке</div>';
-    content = `<div class="card-head"><h2>Проверка отчётов (${allReports.length})</h2></div>${html}`;
-  }
-  else if (currentAdminTab === 'weekly') {
-    const myClaims = state.weeklyClaims.filter(c => c.status === 'pending');
-    
-    let editor = `
-      <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; margin-bottom:20px; border:1px solid var(--border);">
-        <h3 style="font-family:'Oswald'; margin-bottom:15px;">Добавить задание</h3>
-        <div class="form-row">
-          <input type="text" id="qTitle" class="input" placeholder="Название задания">
-          <input type="number" id="qReward" class="input" placeholder="Награда (очки)">
-        </div>
-        <textarea id="qDesc" class="input" rows="2" placeholder="Описание задания" style="margin-top:10px;"></textarea>
-        <button class="btn-primary" style="margin-top:15px;" onclick="createQuest()">Создать</button>
-      </div>
-    `;
-
-    let activeQuests = state.weeklyQuests.map(q => `
-      <div class="admin-item">
-        <div class="admin-info">
-          <div class="admin-name">${escapeHtml(q.title)}</div>
-          <div class="admin-sub">${escapeHtml(q.desc)} | Награда: ${q.reward} очков</div>
-        </div>
-        <button class="btn-danger btn-sm" onclick="deleteQuest('${q.id}')">Удалить</button>
-      </div>
-    `).join('') || '<div class="empty">Заданий пока нет</div>';
-
-    let claimsHtml = myClaims.map(c => `
-      <div class="admin-item" style="border-color:var(--gold);">
-        <div class="admin-info">
-          <div class="admin-name">${escapeHtml(c.userName)}</div>
-          <div class="admin-sub">Задание: <strong>${escapeHtml(c.questTitle)}</strong></div>
-          <div style="font-size:12px; margin-top:5px;"><a href="${escapeHtml(c.proof)}" target="_blank" style="color:var(--blue); font-weight:600;">🔗 Доказательства</a></div>
-        </div>
-        <div class="admin-actions">
-          <button class="btn-primary btn-sm" onclick="approveQuestClaim('${c.id}')">✓ Подтвердить</button>
-          <button class="btn-danger btn-sm" onclick="rejectQuestClaim('${c.id}')">✕ Отклонить</button>
-        </div>
-      </div>
-    `).join('') || '<div class="empty">Нет заявок на проверку</div>';
-
-    content = `
-      <div class="card-head"><h2>Редактор заданий</h2></div>
-      ${editor}
-      <div style="margin-top:30px;">
-        <h3 style="font-family:'Oswald'; margin-bottom:15px; color:var(--green);">Активные задания</h3>
-        ${activeQuests}
-      </div>
-      <div style="margin-top:30px;">
-        <h3 style="font-family:'Oswald'; margin-bottom:15px; color:var(--gold);">Заявки на выполнение (${myClaims.length})</h3>
-        ${claimsHtml}
-      </div>
-    `;
-  }
-  else if (currentAdminTab === 'prizes') {
-    const html = state.pendingPrizes.map((p, i) => `
-      <div class="admin-item">
-        <div class="admin-info">
-          <div class="admin-name">${escapeHtml(p.userName)}</div>
-          <div class="admin-sub">Выиграл: <strong style="color:var(--gold)">${escapeHtml(p.prizeName)}</strong></div>
-        </div>
-        <button class="btn-primary btn-sm" onclick="givePrize(${i})">Выдать</button>
-      </div>
-    `).join('') || '<div class="empty">Нет невыданных призов</div>';
-    content = `<div class="card-head"><h2>Невыданные призы (${state.pendingPrizes.length})</h2></div>${html}`;
-  }
-  else if (currentAdminTab === 'ranks') {
-    const html = state.rankRequests.map((r, i) => `
-      <div class="admin-item">
-        <div class="admin-info">
-          <div class="admin-name">${escapeHtml(r.userName)}</div>
-          <div class="admin-sub">Хочет звание: <strong>${escapeHtml(r.newRank)}</strong> | <a href="${escapeHtml(r.proof)}" target="_blank" style="color:var(--blue)">Доказательство</a></div>
-        </div>
-        <div class="admin-actions">
-          <button class="btn-primary btn-sm" onclick="approveRank(${i})">Одобрить</button>
-          <button class="btn-danger btn-sm" onclick="rejectRank(${i})">Отклонить</button>
-        </div>
-      </div>
-    `).join('') || '<div class="empty">Нет заявок на звание</div>';
-    content = `<div class="card-head"><h2>Заявки на повышение (${state.rankRequests.length})</h2></div>${html}`;
-  }
-
-  return `
-    <h1 style="font-family:'Oswald'; font-size:28px; margin-bottom:20px; color:var(--purple); letter-spacing:1px;">ПАНЕЛЬ УПРАВЛЕНИЯ</h1>
-    <div class="admin-tabs">
-      <div class="admin-tab ${currentAdminTab === 'users' ? 'active' : ''}" onclick="switchAdminTab('users')">Пользователи</div>
-      <div class="admin-tab ${currentAdminTab === 'reports' ? 'active' : ''}" onclick="switchAdminTab('reports')">Отчёты</div>
-      <div class="admin-tab ${currentAdminTab === 'weekly' ? 'active' : ''}" onclick="switchAdminTab('weekly')">Задания</div>
-      <div class="admin-tab ${currentAdminTab === 'prizes' ? 'active' : ''}" onclick="switchAdminTab('prizes')">Призы</div>
-      <div class="admin-tab ${currentAdminTab === 'ranks' ? 'active' : ''}" onclick="switchAdminTab('ranks')">Звания</div>
-    </div>
-    <div class="card">${content}</div>
-  `;
-}
-
-function switchAdminTab(tab) { currentAdminTab = tab; render(); }
-
-/* ACTIONS */
-function approveUser(name) {
-  state.users[name].status = 'approved';
-  saveState();
-  toast(`Аккаунт ${name} одобрен!`, 'success');
-  render();
-}
-
-function rejectUser(name) {
-  state.users[name].status = 'rejected';
-  saveState();
-  toast(`Аккаунт ${name} отклонен`, 'err');
-  render();
-}
-
-function toggleMod(name) {
-  const u = state.users[name];
-  u.role = u.role === 'moderator' ? 'user' : 'moderator';
-  saveState(); render(); toast(`Роль изменена`, 'gold');
-}
-
-function approveReport(userName, reportId) {
-  const pts = parseInt($(`pts_${reportId}`).value);
-  if (!pts || pts < 0) return toast('Введите корректное количество очков', 'err');
-  const u = state.users[userName];
-  const report = u.reports.find(r => r.id === reportId);
-  report.status = 'approved';
-  report.points = pts;
-  u.points += pts;
-  saveState(); render(); toast(`Отчёт подтвержден. +${pts} очков.`, 'success');
-}
-
-function rejectReport(userName, reportId) {
-  const u = state.users[userName];
-  u.reports.find(r => r.id === reportId).status = 'rejected';
-  saveState(); render(); toast('Отчёт отклонен', 'err');
-}
-
-function createQuest() {
-  const title = $('qTitle').value.trim();
-  const desc = $('qDesc').value.trim();
-  const reward = parseInt($('qReward').value);
-  if (!title || !desc || !reward || reward <= 0) return toast('Заполните все поля корректно', 'err');
-  
-  state.weeklyQuests.push({
-    id: Date.now().toString(),
-    title, desc, reward
-  });
-  saveState();
-  render();
-  toast('Задание создано', 'success');
-}
-
-function deleteQuest(id) {
-  if (!confirm('Удалить это задание?')) return;
-  state.weeklyQuests = state.weeklyQuests.filter(q => q.id !== id);
-  saveState(); render();
-  toast('Задание удалено', 'err');
-}
-
-function approveQuestClaim(claimId) {
-  const claim = state.weeklyClaims.find(c => c.id === claimId);
-  if (!claim) return;
-  claim.status = 'approved';
-  const quest = state.weeklyQuests.find(q => q.id === claim.questId);
-  if (quest) {
-    state.users[claim.userName].points += quest.reward;
-  }
-  saveState(); render();
-  toast(`Задание одобрено! +${quest ? quest.reward : 0} очков игроку ${claim.userName}`, 'success');
-}
-
-function rejectQuestClaim(claimId) {
-  const claim = state.weeklyClaims.find(c => c.id === claimId);
-  if (!claim) return;
-  claim.status = 'rejected';
-  saveState(); render();
-  toast('Заявка отклонена', 'err');
-}
-
-function givePrize(idx) {
-  state.pendingPrizes.splice(idx, 1);
-  saveState(); render(); toast('Приз выдан!', 'success');
-}
-
-function approveRank(idx) {
-  const req = state.rankRequests[idx];
-  state.users[req.userName].rank = req.newRank;
-  state.rankRequests.splice(idx, 1);
-  saveState(); render(); toast('Звание обновлено', 'success');
-}
-
-function rejectRank(idx) {
-  state.rankRequests.splice(idx, 1);
-  saveState(); render(); toast('Заявка отклонена', 'err');
-}
-
-function openReportModal() {
-  const u = getCurrentUser();
-  if (u.role === 'guest') return toast('Войдите, чтобы сдавать отчёты', 'err');
-  document.getElementById('reportModal').classList.add('open');
-}
-
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-function submitReport(e) {
-  e.preventDefault();
-  const u = getCurrentUser();
-  const hours = calcHours($('rStart').value, $('rEnd').value);
-  if (hours <= 0) return toast('Ошибка во времени.', 'err');
-
-  const report = {
-    id: Date.now().toString(),
-    date: $('rDate').value,
-    hours: Math.round(hours * 100) / 100,
-    type: $('rType').value,
-    desc: $('rDesc').value.trim(),
-    proof: $('rProof').value.trim(),
-    points: 0,
-    status: 'pending',
-    createdAt: new Date().toISOString()
-  };
-
-  u.reports.unshift(report);
-  saveState();
-  closeModal('reportModal');
-  toast('Отчёт отправлен на проверку.', 'success');
-  render();
-}
-
-function calcHours(start, end) {
-  if (!start || !end) return 0;
-  const [sh, sm] = start.split(':').map(Number);
-  const [eh, em] = end.split(':').map(Number);
-  let mins = (eh * 60 + em) - (sh * 60 + sm);
-  if (mins < 0) mins += 24 * 60;
-  return mins / 60;
-}
-
-/* SUBMIT QUEST MODAL */
-let currentQuestToSubmit = null;
-function openSubmitQuestModal(questId) {
-  currentQuestToSubmit = state.weeklyQuests.find(q => q.id === questId);
-  if (!currentQuestToSubmit) return;
-  $('sqProof').value = '';
-  document.getElementById('submitQuestModal').classList.add('open');
-}
-
-function submitQuestProof(e) {
-  e.preventDefault();
-  const u = getCurrentUser();
-  const proof = $('sqProof').value.trim();
-  if (!proof) return toast('Введите ссылку', 'err');
-
-  state.weeklyClaims.push({
-    id: Date.now().toString(),
-    userName: u.name,
-    questId: currentQuestToSubmit.id,
-    questTitle: currentQuestToSubmit.title,
-    proof,
-    date: new Date().toISOString(),
-    status: 'pending'
-  });
-  saveState();
-  closeModal('submitQuestModal');
-  render();
-  toast('Задание отправлено на проверку', 'success');
-}
-
-function openRankChangeModal() { document.getElementById('rankModal').classList.add('open'); }
-
-function submitRankChange(e) {
-  e.preventDefault();
-  const u = getCurrentUser();
-  state.rankRequests.push({
-    id: Date.now(),
-    userName: u.name,
-    currentRank: u.rank,
-    newRank: $('reqRank').value,
-    proof: $('reqProof').value
-  });
-  saveState();
-  closeModal('rankModal');
-  toast('Заявка на звание отправлена', 'success');
-}
-
-/* ROULETTE */
-const PRIZES = [
-  { name: '5 000 $', icon: '💵', rarity: 'common' }, { name: '10 000 $', icon: '💵', rarity: 'common' },
-  { name: '30 000 $', icon: '💰', rarity: 'rare' }, { name: '50 000 $', icon: '💰', rarity: 'rare' },
-  { name: '100 000 $', icon: '💎', rarity: 'epic' }, { name: '300 000 $', icon: '👑', rarity: 'legendary' },
-  { name: 'Приз от Создателя', icon: '🏆', rarity: 'legendary' }
-];
-
-function cardHTML(prize) {
-  let color = prize.rarity === 'legendary' ? 'var(--gold)' : prize.rarity === 'epic' ? 'var(--purple)' : prize.rarity === 'rare' ? 'var(--blue)' : 'var(--gray)';
-  return `
-    <div style="flex:0 0 130px; width:130px; height:150px; margin:0 5px; border-radius:10px; background:rgba(255,255,255,0.05); border:1px solid ${color}; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; box-shadow:0 0 10px ${color}40;">
-      <div style="font-size:30px;">${prize.icon}</div>
-      <div style="font-size:12px; font-weight:700; text-align:center; padding:0 8px;">${prize.name}</div>
-    </div>`;
-}
-
-function renderRoulette() {
-  const u = getCurrentUser();
-  return `
-    <h1 style="font-family:'Oswald'; font-size:28px; margin-bottom:24px; letter-spacing:1px;">РУЛЕТКА УДАЧИ</h1>
-    <div class="card" style="margin-bottom:24px; padding:30px;">
-      <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-family:'Oswald'; font-size:18px;">
-        <div>Стоимость спина: <span style="color:var(--gold);">50 очков</span></div>
-        <div>Баланс: <span style="color:var(--gold);">${u.points}</span></div>
-      </div>
-      <div class="roulette-wrap">
-        <div class="center-line"></div>
-        <div class="marker-top"></div>
-        <div class="marker-bottom"></div>
-        <div class="tape" id="rouletteTape" style="display:flex; will-change:transform;"></div>
-      </div>
-      <div style="margin-top:30px; text-align:center;">
-        <button class="btn-primary" id="spinBtn" onclick="spinRoulette()" style="padding:16px 50px; font-size:20px; border-radius:12px; box-shadow:0 0 30px rgba(251,191,36,0.4);">🎰 КРУТИТЬ</button>
-      </div>
-    </div>
-  `;
-}
-
-function initRouletteTape() {
-  const tape = $('rouletteTape');
-  if (!tape) return;
-  let html = '';
-  for (let i = 0; i < 20; i++) html += cardHTML(PRIZES[Math.floor(Math.random() * PRIZES.length)]);
-  tape.innerHTML = html;
-  tape.style.transform = 'translateX(0)';
-}
-
-function spinRoulette() {
-  const u = getCurrentUser();
-  if (u.role === 'guest') return toast('Войдите в аккаунт', 'err');
-  if (u.points < 50) return toast('Нужно 50 очков', 'err');
-
-  const btn = $('spinBtn');
-  if (btn.disabled) return;
-  btn.disabled = true;
-
-  u.points -= 50;
-  saveState();
-  $('topBalance').textContent = u.points;
-
-  const winner = PRIZES[Math.floor(Math.random() * PRIZES.length)];
-  const tape = $('rouletteTape');
-  
-  let slots = [];
-  for (let i = 0; i < 60; i++) slots.push(i === 50 ? winner : PRIZES[Math.floor(Math.random() * PRIZES.length)]);
-  tape.innerHTML = slots.map(cardHTML).join('');
-
-  tape.style.transition = 'none';
-  tape.style.transform = 'translateX(0px)';
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const targetX = -(50 * 140) + 300; 
-      tape.style.transition = 'transform 5s cubic-bezier(.14,.72,.16,1)';
-      tape.style.transform = `translateX(${targetX}px)`;
-    });
-  });
-
-  setTimeout(() => {
-    btn.disabled = false;
-    confetti({
-      particleCount: 150,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#fbbf24', '#10b981', '#3b82f6', '#ffffff']
-    });
-    toast(`ВЫ ВЫБИЛИ: <b>${winner.name}</b>`, 'gold');
-    
-    state.rouletteHistory.unshift({ userName: u.name, prize: winner.name, date: Date.now() });
-    state.pendingPrizes.push({ userName: u.name, prizeName: winner.name, date: Date.now() });
-    saveState();
-  }, 5200);
-}
-
-/* INIT */
-window.addEventListener('hashchange', render);
-setInterval(() => {
-  if (state.currentUser && state.currentUser !== 'GUEST') {
-    state.users[state.currentUser].lastSeen = Date.now();
-    saveState();
-  }
-}, 30000);
-
-loadState();
-checkAuth();
-</script>
-
 <!-- REPORT MODAL -->
 <div class="modal" id="reportModal">
   <div class="modal-card">
     <h2 class="modal-title">Сдать отчёт</h2>
-    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Очки будут начислены модератором после проверки.</p>
-    <form id="reportForm" onsubmit="submitReport(event)">
+    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Очки начислит модератор после проверки.</p>
+    <form id="reportForm">
       <div class="form-row">
         <div class="form-group">
           <label>Дата смены</label>
@@ -1156,12 +330,12 @@ checkAuth();
         <textarea id="rDesc" class="input" rows="3" required minlength="10" placeholder="Что делал на смене..."></textarea>
       </div>
       <div class="form-group">
-        <label>Ссылка на доказательства (обязательно)</label>
+        <label>Ссылка на доказательства</label>
         <input type="url" id="rProof" class="input" required placeholder="https://imgur.com/...">
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn-secondary" onclick="closeModal('reportModal')">Отмена</button>
-        <button type="submit" class="btn-primary">Отправить</button>
+        <button type="button" class="btn-secondary" data-action="close-modal" data-modal="reportModal">Отмена</button>
+        <button type="submit" class="btn-primary" id="reportSubmitBtn">Отправить</button>
       </div>
     </form>
   </div>
@@ -1171,51 +345,1132 @@ checkAuth();
 <div class="modal" id="rankModal">
   <div class="modal-card">
     <h2 class="modal-title">Запрос на повышение</h2>
-    <form onsubmit="submitRankChange(event)">
+    <form id="rankForm">
       <div class="form-group">
         <label>Желаемое звание</label>
-        <select id="reqRank" class="input">
-          <option value="Рядовой">Рядовой</option>
-          <option value="Сержант">Сержант</option>
-          <option value="Ст. Сержант">Ст. Сержант</option>
-          <option value="Лейтенант">Лейтенант</option>
-          <option value="Ст. Лейтенант">Ст. Лейтенант</option>
-          <option value="Капитан">Капитан</option>
-          <option value="Майор">Майор</option>
-          <option value="Подполковник">Подполковник</option>
-          <option value="Полковник">Полковник</option>
-          <option value="Шериф">Шериф</option>
-        </select>
+        <select id="reqRank" class="input"></select>
       </div>
       <div class="form-group">
         <label>Ссылка на доказательства</label>
         <input type="url" id="reqProof" class="input" required placeholder="https://imgur.com/...">
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn-secondary" onclick="closeModal('rankModal')">Отмена</button>
+        <button type="button" class="btn-secondary" data-action="close-modal" data-modal="rankModal">Отмена</button>
         <button type="submit" class="btn-primary">Отправить</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- SUBMIT QUEST MODAL -->
+<!-- QUEST MODAL -->
 <div class="modal" id="submitQuestModal">
   <div class="modal-card">
     <h2 class="modal-title">Подтверждение выполнения</h2>
-    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Прикрепите ссылку на скриншот или видео доказательство.</p>
-    <form onsubmit="submitQuestProof(event)">
+    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Прикрепи ссылку на скриншот или видео.</p>
+    <form id="questForm">
       <div class="form-group">
         <label>Ссылка на доказательства</label>
         <input type="url" id="sqProof" class="input" required placeholder="https://imgur.com/...">
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn-secondary" onclick="closeModal('submitQuestModal')">Отмена</button>
+        <button type="button" class="btn-secondary" data-action="close-modal" data-modal="submitQuestModal">Отмена</button>
         <button type="submit" class="btn-primary">Отправить</button>
       </div>
     </form>
   </div>
 </div>
 
+<script type="module">
+/* ============================================================
+   LVPD Activity Hub — версия с Firebase (Firestore + Auth)
+   ============================================================ */
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {
+  getAuth, onAuthStateChanged, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, signOut
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {
+  getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc,
+  updateDoc, deleteDoc, query, where, runTransaction, increment
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+/* ---------------- CONFIG (вставь свои значения) ---------------- */
+const firebaseConfig = {
+  apiKey: "AIzaSyAscUjaztoWc_GK14a3QzWNsTvGb3eOFCI",
+  authDomain: "lvpd-hub.firebaseapp.com",
+  projectId: "lvpd-hub",
+  storageBucket: "lvpd-hub.firebasestorage.app",
+  messagingSenderId: "570788127007",
+  appId: "1:570788127007:web:21d5b0bf4ff9585d38902a"
+};
+
+/* ---------------- CONST ---------------- */
+const RANKS = ['Рядовой', 'Сержант', 'Ст. Сержант', 'Лейтенант', 'Ст. Лейтенант',
+  'Капитан', 'Майор', 'Подполковник', 'Полковник', 'Шериф'];
+
+const PRIZES = [
+  { name: '5 000 $', icon: '💵', rarity: 'common' },
+  { name: '10 000 $', icon: '💵', rarity: 'common' },
+  { name: '30 000 $', icon: '💰', rarity: 'rare' },
+  { name: '50 000 $', icon: '💰', rarity: 'rare' },
+  { name: '100 000 $', icon: '💎', rarity: 'epic' },
+  { name: '300 000 $', icon: '👑', rarity: 'legendary' },
+  { name: 'Приз от Создателя', icon: '🏆', rarity: 'legendary' }
+];
+
+const SPIN_COST = 50;
+
+/* ---------------- HELPERS ---------------- */
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+const initials = (name) => (name || '?').split(/[\s_.-]+/).filter(Boolean)
+  .slice(0, 2).map(w => w[0].toUpperCase()).join('') || '?';
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+function toast(html, type) {
+  const el = $('toast');
+  el.className = 'toast ' + (type || '');
+  el.innerHTML = html;
+  requestAnimationFrame(() => el.classList.add('show'));
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), 4200);
+}
+
+function localDateStr(d) {
+  const pad = (n) => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+}
+
+function weekKey() {
+  const d = new Date();
+  const day = d.getDay() || 7;
+  d.setDate(d.getDate() - day + 1);
+  return localDateStr(d);
+}
+
+function nickKey(name) {
+  return String(name || '').trim().toLowerCase().replace(/\s+/g, ' ').replace(/\//g, '_');
+}
+
+function hashStr(s) {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = (((h << 5) + h) ^ s.charCodeAt(i)) >>> 0;
+  return h.toString(36);
+}
+
+/* Ник превращается в технический email для Firebase Auth */
+function emailFor(name) {
+  const k = nickKey(name);
+  const base = k.replace(/[^a-z0-9]/g, '').slice(0, 20) || 'user';
+  return base + '.' + hashStr(k) + '@lvpd.local';
+}
+
+function authError(err) {
+  const code = err && err.code ? err.code : '';
+  if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' ||
+      code === 'auth/user-not-found' || code === 'auth/invalid-email') return 'Неверный ник или пароль';
+  if (code === 'auth/email-already-in-use') return 'Этот ник уже занят';
+  if (code === 'auth/weak-password') return 'Пароль слишком простой (минимум 6 символов)';
+  if (code === 'auth/too-many-requests') return 'Слишком много попыток, подожди немного';
+  if (code === 'auth/network-request-failed') return 'Нет соединения с сервером';
+  return (err && err.message) ? err.message : 'Неизвестная ошибка';
+}
+
+/* ---------------- SETUP GUARD ---------------- */
+if (firebaseConfig.apiKey.indexOf('PASTE') === 0 || firebaseConfig.apiKey.includes('PASTE')) {
+  $('loading').classList.add('hidden');
+  $('setupWarn').classList.remove('hidden');
+  throw new Error('Вставь свой firebaseConfig');
+}
+
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+
+/* ---------------- STATE ---------------- */
+const state = {
+  me: null,
+  isAdmin: false,      // создатель
+  isStaff: false,      // создатель или модератор
+  users: [],
+  adminUids: [],
+  myReports: [],
+  quests: [],
+  myClaims: [],
+  pendingReports: [],
+  pendingClaims: [],
+  rankRequests: [],
+  prizes: []
+};
+
+let booted = false;
+let registering = false;
+let currentAdminTab = 'users';
+let currentQuestToSubmit = null;
+
+/* ---------------- ЭКРАНЫ ---------------- */
+function hideAllScreens() {
+  ['loading', 'setupWarn', 'authRoot', 'pendingRoot'].forEach(id => $(id).classList.add('hidden'));
+  $('appRoot').classList.add('hidden');
+}
+
+function showAuth() {
+  hideAllScreens();
+  $('authRoot').classList.remove('hidden');
+}
+
+function showPending(profile) {
+  hideAllScreens();
+  const rej = profile.status === 'rejected';
+  $('pendingBox').innerHTML = `
+    <div style="text-align:center; margin-bottom:20px;">
+      <div class="shield" style="margin:0 auto 15px; width:60px; height:65px; font-size:16px;">LVPD</div>
+      <h2 style="font-family:'Oswald'; font-size:22px; letter-spacing:1px; color:${rej ? 'var(--red)' : 'var(--gold)'};">
+        ${rej ? 'ЗАЯВКА ОТКЛОНЕНА' : 'ЗАЯВКА НА РАССМОТРЕНИИ'}
+      </h2>
+    </div>
+    <p style="font-size:14px; color:var(--muted); line-height:1.6; text-align:center;">
+      ${rej
+        ? 'Твою заявку отклонил создатель фракции. Если это ошибка — напиши в тех. поддержку.'
+        : 'Твой аккаунт успешно создан и отправлен создателю фракции. Как только его одобрят — сможешь войти.'}
+    </p>
+    <div class="admin-item" style="margin-top:20px;">
+      <div class="admin-info">
+        <div class="admin-name">${esc(profile.name)}</div>
+        <div class="admin-sub">${esc(profile.rank || '-')} | ID: ${esc(profile.id || '-')}</div>
+      </div>
+    </div>
+    <button class="btn-secondary" style="width:100%; margin-top:10px;" data-action="logout">Выйти</button>
+  `;
+  $('pendingRoot').classList.remove('hidden');
+}
+
+function showApp() {
+  hideAllScreens();
+  $('appRoot').classList.remove('hidden');
+  render();
+}
+
+/* ---------------- AUTH ---------------- */
+onAuthStateChanged(auth, async (user) => {
+  if (registering) return;
+  if (!user) {
+    booted = false;
+    state.me = null;
+    state.isAdmin = false;
+    state.isStaff = false;
+    showAuth();
+    return;
+  }
+  await bootUser(user);
+});
+
+async function bootUser(user) {
+  booted = true;
+  try {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (!snap.exists()) {
+      await signOut(auth);
+      booted = false;
+      showAuth();
+      toast('Профиль не найден. Зарегистрируйся заново.', 'err');
+      return;
+    }
+    const profile = Object.assign({ uid: user.uid }, snap.data());
+    if (profile.status !== 'approved') {
+      state.me = profile;
+      showPending(profile);
+      return;
+    }
+    const adminSnap = await getDoc(doc(db, 'admins', user.uid));
+    state.isAdmin = adminSnap.exists();
+    state.isStaff = state.isAdmin || profile.role === 'moderator';
+    state.me = profile;
+    await refresh();
+    showApp();
+  } catch (err) {
+    console.error(err);
+    booted = false;
+    toast('Ошибка загрузки: ' + (err.message || err), 'err');
+  }
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const name = $('loginName').value.trim();
+  const pass = $('loginPass').value;
+  if (!name || !pass) return toast('Заполни ник и пароль', 'err');
+  try {
+    await signInWithEmailAndPassword(auth, emailFor(name), pass);
+  } catch (err) {
+    toast(authError(err), 'err');
+  }
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  if (registering) return;
+  const name = $('regName').value.trim();
+  const staticId = $('regId').value.trim();
+  const rank = $('regRank').value;
+  const statsLink = $('regStats').value.trim();
+  const pass = $('regPass').value;
+
+  if (name.length < 2) return toast('Ник слишком короткий', 'err');
+  if (pass.length < 6) return toast('Пароль должен быть минимум 6 символов', 'err');
+
+  registering = true;
+  try {
+    const key = nickKey(name);
+    const nickSnap = await getDoc(doc(db, 'nicknames', key));
+    if (nickSnap.exists()) {
+      registering = false;
+      return toast('Этот ник уже занят', 'err');
+    }
+
+    const cred = await createUserWithEmailAndPassword(auth, emailFor(name), pass);
+
+    await setDoc(doc(db, 'users', cred.user.uid), {
+      name: name,
+      nameKey: key,
+      id: staticId,
+      rank: rank,
+      statsLink: statsLink,
+      status: 'pending',
+      role: 'user',
+      points: 0,
+      createdAt: Date.now()
+    });
+    await setDoc(doc(db, 'nicknames', key), {
+      uid: cred.user.uid,
+      name: name,
+      createdAt: Date.now()
+    });
+
+    registering = false;
+    await bootUser(cred.user);
+    toast('Заявка отправлена! Жди одобрения создателя.', 'success');
+  } catch (err) {
+    registering = false;
+    try { if (auth.currentUser) await signOut(auth); } catch (_) {}
+    toast(authError(err), 'err');
+  }
+}
+
+async function logout() {
+  try { await signOut(auth); } catch (_) {}
+  booted = false;
+  state.me = null;
+  state.isAdmin = false;
+  state.isStaff = false;
+  showAuth();
+}
+
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  $('loginForm').classList.toggle('hidden', tab !== 'login');
+  $('registerForm').classList.toggle('hidden', tab !== 'register');
+}
+
+/* ---------------- ДАННЫЕ ---------------- */
+async function refresh() {
+  if (!state.me) return;
+  const wk = weekKey();
+
+  const [qSnap, rSnap, cSnap] = await Promise.all([
+    getDocs(query(collection(db, 'quests'), where('week', '==', wk))),
+    getDocs(query(collection(db, 'reports'), where('uid', '==', state.me.uid))),
+    getDocs(query(collection(db, 'claims'), where('uid', '==', state.me.uid)))
+  ]);
+
+  state.quests = qSnap.docs.map(d => Object.assign({ id: d.id }, d.data()))
+    .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  state.myReports = rSnap.docs.map(d => Object.assign({ id: d.id }, d.data()))
+    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  state.myClaims = cSnap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+
+  if (state.isStaff) {
+    const [uSnap, prSnap, pcSnap, rrSnap, pzSnap, adSnap] = await Promise.all([
+      getDocs(collection(db, 'users')),
+      getDocs(query(collection(db, 'reports'), where('status', '==', 'pending'))),
+      getDocs(query(collection(db, 'claims'), where('status', '==', 'pending'))),
+      getDocs(collection(db, 'rankRequests')),
+      getDocs(collection(db, 'prizes')),
+      getDocs(collection(db, 'admins'))
+    ]);
+    state.users = uSnap.docs.map(d => Object.assign({ uid: d.id }, d.data()))
+      .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    state.pendingReports = prSnap.docs.map(d => Object.assign({ id: d.id }, d.data()))
+      .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    state.pendingClaims = pcSnap.docs.map(d => Object.assign({ id: d.id }, d.data()))
+      .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    state.rankRequests = rrSnap.docs.map(d => Object.assign({ id: d.id }, d.data()))
+      .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    state.prizes = pzSnap.docs.map(d => Object.assign({ id: d.id }, d.data()))
+      .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    state.adminUids = adSnap.docs.map(d => d.id);
+  }
+
+  const meSnap = await getDoc(doc(db, 'users', state.me.uid));
+  if (meSnap.exists()) {
+    state.me = Object.assign({ uid: state.me.uid }, meSnap.data());
+    state.isStaff = state.isAdmin || state.me.role === 'moderator';
+  }
+}
+
+async function reload() {
+  try {
+    await refresh();
+    render();
+  } catch (err) {
+    console.error(err);
+    toast('Ошибка: ' + (err.message || err), 'err');
+  }
+}
+
+/* ---------------- RENDER ---------------- */
+function render() {
+  const u = state.me;
+  if (!u) return;
+
+  $('topBalance').textContent = u.points || 0;
+  $('topAvatar').textContent = initials(u.name);
+  $('nav-admin').style.display = state.isStaff ? 'block' : 'none';
+
+  const hash = window.location.hash || '#home';
+  document.querySelectorAll('.nav a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === hash);
+  });
+
+  const appEl = $('app');
+  if (hash === '#reports') appEl.innerHTML = renderReports();
+  else if (hash === '#roulette') { appEl.innerHTML = renderRoulette(); initRouletteTape(); }
+  else if (hash === '#weekly') appEl.innerHTML = renderWeekly();
+  else if (hash === '#profile') appEl.innerHTML = renderProfile();
+  else if (hash === '#admin') appEl.innerHTML = state.isStaff ? renderAdmin() : '<div class="card">Доступ запрещён</div>';
+  else appEl.innerHTML = renderHome();
+}
+
+function renderHome() {
+  const u = state.me;
+  const isCreator = state.isAdmin;
+  const isMod = !isCreator && state.isStaff;
+  const pending = state.myReports.filter(r => r.status === 'pending').length;
+
+  return `
+    <div class="hero-video-wrap">
+      <video class="hero-video" autoplay loop muted playsinline>
+        <source src="https://videos.pexels.com/video-files/853800/853800-hd_1920_1080_30fps.mp4" type="video/mp4">
+      </video>
+      <div class="siren-flash"></div>
+      <div class="hero-overlay">
+        <div class="hero-content">
+          <h1 class="${isCreator ? 'badge-creator' : ''}" style="color:#fff;">
+            ${isCreator ? '👑 ДОБРО ПОЖАЛОВАТЬ, СОЗДАТЕЛЬ' : 'ПРИВЕТСТВУЕМ, ' + esc(u.name).toUpperCase()}
+          </h1>
+          <p>Система управления активностью фракции LVPD • Absolute Platinum</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <section class="card">
+        <div class="card-head"><h2>Оперативная сводка</h2></div>
+        <p style="font-size:15px; color:var(--muted); line-height:1.6; margin-bottom:20px;">
+          Здесь ты сдаёшь отчёты о сменах, крутишь рулетку, выполняешь задания и получаешь звания.
+          Все данные хранятся в облаке и видны всей фракции.
+        </p>
+        <div style="display:flex; gap:15px; flex-wrap:wrap;">
+          <button class="btn-primary" data-action="open-report">Сдать отчёт</button>
+          <a href="#roulette" class="btn-secondary">В рулетку</a>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>Статус дежурства</h2></div>
+        <div class="admin-item" style="margin-bottom:0; background:rgba(59,130,246,0.05); border-color:var(--blue);">
+          <div class="admin-info">
+            <div class="admin-name ${isCreator ? 'badge-creator' : ''}">${esc(u.name)} ${isCreator ? '👑' : (isMod ? '🛡' : '')}</div>
+            <div class="admin-sub">Звание: ${esc(u.rank || '-')} | ID: ${esc(u.id || '-')}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:20px; color:var(--green); font-weight:800;">🟢 НА СВЯЗИ</div>
+            <div class="admin-sub">Отчётов на проверке: ${pending}</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-value">${approvedHours()}</div><div class="stat-label">Часов</div></div>
+      <div class="stat-card"><div class="stat-icon">💼</div><div class="stat-value">${state.myReports.filter(r => r.status === 'approved').length}</div><div class="stat-label">Смен</div></div>
+      <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value">${state.myReports.length}</div><div class="stat-label">Отчётов</div></div>
+      <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-value">${state.quests.length}</div><div class="stat-label">Заданий на неделе</div></div>
+    </div>
+  `;
+}
+
+function approvedHours() {
+  const sum = state.myReports.filter(r => r.status === 'approved')
+    .reduce((s, r) => s + (Number(r.hours) || 0), 0);
+  return Math.round(sum * 100) / 100;
+}
+
+function renderProfile() {
+  const u = state.me;
+  const isCreator = state.isAdmin;
+  const isMod = !isCreator && state.isStaff;
+  const badge = isCreator
+    ? '<span class="badge-creator" style="font-size:20px; margin-left:15px;">👑 СОЗДАТЕЛЬ</span>'
+    : (isMod ? '<span class="badge-moderator" style="font-size:20px; margin-left:15px;">🛡 МОДЕРАТОР</span>' : '');
+
+  return `
+    <div class="card" style="display:flex; gap:24px; align-items:center; flex-wrap:wrap; ${isCreator ? 'border-color:var(--gold); box-shadow:0 0 40px rgba(251,191,36,.15);' : ''}">
+      <div class="avatar" style="width:90px; height:90px; font-size:30px; border:3px solid ${isCreator ? 'var(--gold)' : 'var(--border)'};">${initials(u.name)}</div>
+      <div style="flex:1;">
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h1 style="font-family:'Oswald'; font-size:32px; font-weight:700; letter-spacing:1px;">${esc(u.name).toUpperCase()}</h1>
+          ${badge}
+        </div>
+        <div style="color:var(--muted); font-size:15px; margin-top:8px;">
+          Звание: <strong style="color:var(--text);">${esc(u.rank || '-')}</strong> |
+          ID: <strong style="color:var(--text);">${esc(u.id || '-')}</strong>
+        </div>
+        ${u.statsLink ? `<div style="margin-top:8px; font-size:13px;"><a href="${esc(u.statsLink)}" target="_blank" rel="noopener" style="color:var(--blue);">🔗 Статистика</a></div>` : ''}
+      </div>
+      <div class="balance" style="padding:20px 30px; border-radius:16px;">
+        <span class="balance-label">Баланс очков</span>
+        <span class="balance-value" style="font-size:36px;">${u.points || 0}</span>
+      </div>
+    </div>
+
+    <div class="stats-grid" style="margin-top:24px;">
+      <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-value">${approvedHours()}</div><div class="stat-label">Часов</div></div>
+      <div class="stat-card"><div class="stat-icon">💼</div><div class="stat-value">${state.myReports.filter(r => r.status === 'approved').length}</div><div class="stat-label">Смен</div></div>
+      <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value">${state.myReports.length}</div><div class="stat-label">Отчётов</div></div>
+      <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-value">${state.myReports.filter(r => r.status === 'pending').length}</div><div class="stat-label">На проверке</div></div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-head"><h2>Действия</h2></div>
+      <div style="display:flex; gap:15px; flex-wrap:wrap;">
+        <button class="btn-secondary" data-action="open-rank">📈 Запросить повышение</button>
+        ${state.isStaff ? `<button class="btn-admin" data-action="go-admin">Перейти в Админ-панель</button>` : ''}
+        <button class="btn-danger" data-action="logout">Выйти из аккаунта</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderReports() {
+  let html = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:15px;">
+    <h1 style="font-family:'Oswald'; font-size:28px; letter-spacing:1px;">МОИ ОТЧЁТЫ</h1>
+    <button class="btn-primary" data-action="open-report">+ Сдать отчёт</button>
+  </div>`;
+
+  if (!state.myReports.length) return html + `<div class="card"><div class="empty">Отчётов пока нет.</div></div>`;
+
+  html += state.myReports.map(r => `
+    <div class="report-item">
+      <div class="report-top">
+        <span class="report-type">${esc(r.type)}</span>
+        <span class="report-status ${esc(r.status)}">
+          ${r.status === 'approved' ? '✓ Проверен' : r.status === 'pending' ? '⏳ На проверке' : '✕ Отклонён'}
+        </span>
+        ${r.status === 'approved' ? `<span style="color:var(--gold); font-weight:800; font-family:'Oswald';">+${r.points || 0} ОЧКОВ</span>` : ''}
+        <span class="report-date">${esc(r.date)} | ${r.hours}ч</span>
+      </div>
+      <div class="report-desc">${esc(r.desc)}</div>
+      ${r.proof ? `<div style="font-size:12px; margin-top:10px;"><a href="${esc(r.proof)}" target="_blank" rel="noopener" style="color:var(--blue); font-weight:600;">🔗 Доказательства</a></div>` : ''}
+    </div>
+  `).join('');
+  return html;
+}
+
+function renderWeekly() {
+  const questsHtml = state.quests.map(q => {
+    const claim = state.myClaims.find(c => c.questId === q.id);
+    let action;
+    if (claim) {
+      if (claim.status === 'approved') action = `<div style="color:var(--green); font-weight:800;">✓ ВЫПОЛНЕНО (+${q.reward} очков)</div>`;
+      else if (claim.status === 'pending') action = `<div style="color:var(--gold); font-weight:800;">⏳ НА ПРОВЕРКЕ</div>`;
+      else action = `<div style="color:var(--red); font-weight:800;">✕ ОТКЛОНЕНО</div>`;
+    } else {
+      action = `<button class="btn-primary" data-action="open-quest" data-id="${esc(q.id)}">Отправить на проверку</button>`;
+    }
+    return `
+      <div class="quest-card">
+        <div class="quest-title">${esc(q.title)}</div>
+        <div class="quest-desc">${esc(q.desc)}</div>
+        <span class="quest-reward">Награда: +${q.reward} очков</span>
+        ${action}
+      </div>
+    `;
+  }).join('') || '<div class="card"><div class="empty">Заданий на эту неделю пока нет.</div></div>';
+
+  return `
+    <h1 style="font-family:'Oswald'; font-size:28px; margin-bottom:24px; letter-spacing:1px;">ЕЖЕНЕДЕЛЬНЫЕ ЗАДАНИЯ</h1>
+    <p style="color:var(--muted); margin-bottom:20px; font-size:14px;">Задания обновляются каждый понедельник. При отправке прикрепи ссылку на доказательство.</p>
+    <div class="grid-2" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+      ${questsHtml}
+    </div>
+  `;
+}
+
+/* ---------------- АДМИН ---------------- */
+function renderAdmin() {
+  const tabs = state.isAdmin
+    ? [['users', 'Пользователи'], ['reports', 'Отчёты'], ['weekly', 'Задания'], ['prizes', 'Призы'], ['ranks', 'Звания']]
+    : [['reports', 'Отчёты'], ['weekly', 'Задания'], ['prizes', 'Призы'], ['ranks', 'Звания']];
+
+  if (!tabs.some(t => t[0] === currentAdminTab)) currentAdminTab = tabs[0][0];
+
+  let content = '';
+  if (currentAdminTab === 'users') content = adminUsers();
+  else if (currentAdminTab === 'reports') content = adminReports();
+  else if (currentAdminTab === 'weekly') content = adminWeekly();
+  else if (currentAdminTab === 'prizes') content = adminPrizes();
+  else if (currentAdminTab === 'ranks') content = adminRanks();
+
+  return `
+    <h1 style="font-family:'Oswald'; font-size:28px; margin-bottom:20px; color:var(--purple); letter-spacing:1px;">ПАНЕЛЬ УПРАВЛЕНИЯ</h1>
+    <div class="admin-tabs">
+      ${tabs.map(t => `<div class="admin-tab ${currentAdminTab === t[0] ? 'active' : ''}" data-action="admin-tab" data-tab="${t[0]}">${t[1]}</div>`).join('')}
+    </div>
+    <div class="card">${content}</div>
+  `;
+}
+
+function adminUsers() {
+  const pending = state.users.filter(u => u.status === 'pending');
+  const others = state.users.filter(u => u.status !== 'pending');
+
+  let html = '';
+  if (pending.length) {
+    html += `<div style="margin-bottom:20px;">
+      <h3 style="font-family:'Oswald'; color:var(--gold); margin-bottom:12px;">⏳ ОЖИДАЮТ ПОДТВЕРЖДЕНИЯ (${pending.length})</h3>`;
+    html += pending.map(u => `
+      <div class="admin-item pending">
+        <div class="admin-info">
+          <div class="admin-name">${esc(u.name)}</div>
+          <div class="admin-sub">
+            ${esc(u.rank || '-')} | ID: ${esc(u.id || '-')} |
+            ${u.statsLink ? `<a href="${esc(u.statsLink)}" target="_blank" rel="noopener" style="color:var(--blue)">Статистика</a>` : 'без ссылки'}
+          </div>
+        </div>
+        <div class="admin-actions">
+          <button class="btn-primary btn-sm" data-action="approve-user" data-uid="${esc(u.uid)}">✓ Одобрить</button>
+          <button class="btn-danger btn-sm" data-action="reject-user" data-uid="${esc(u.uid)}">✕ Отклонить</button>
+        </div>
+      </div>
+    `).join('');
+    html += `</div>`;
+  }
+
+  html += `<div><h3 style="font-family:'Oswald'; color:var(--green); margin-bottom:12px;">✅ УЧАСТНИКИ (${others.length})</h3>`;
+  html += others.map(u => {
+    const isCreator = state.adminUids.includes(u.uid);
+    const isMod = u.role === 'moderator';
+    let actions = '';
+    if (isCreator) actions = '<span style="color:var(--gold); font-weight:800;">СОЗДАТЕЛЬ</span>';
+    else actions = `<button class="btn-secondary btn-sm" data-action="toggle-mod" data-uid="${esc(u.uid)}">${isMod ? 'Снять модератора' : 'Сделать модератором'}</button>`;
+    return `
+      <div class="admin-item">
+        <div class="admin-info">
+          <div class="admin-name">${esc(u.name)} ${isCreator ? '👑' : (isMod ? '🛡' : '')}</div>
+          <div class="admin-sub">
+            ${esc(u.rank || '-')} | ID: ${esc(u.id || '-')} |
+            <span style="color:${u.status === 'approved' ? 'var(--green)' : 'var(--red)'}">
+              ${u.status === 'approved' ? 'Одобрен' : 'Отклонён'}
+            </span> |
+            Очков: ${u.points || 0}
+          </div>
+        </div>
+        <div class="admin-actions">${actions}</div>
+      </div>`;
+  }).join('');
+  html += `</div>`;
+
+  return `<div class="card-head"><h2>Управление аккаунтами</h2></div>${html}`;
+}
+
+function adminReports() {
+  const html = state.pendingReports.map(r => `
+    <div class="admin-item">
+      <div class="admin-info">
+        <div class="admin-name">${esc(r.userName)} <span class="report-type">${esc(r.type)}</span></div>
+        <div class="admin-sub">${esc(r.date)} | ${r.hours}ч | ${esc(r.desc)}</div>
+        ${r.proof ? `<div style="font-size:12px; margin-top:5px;"><a href="${esc(r.proof)}" target="_blank" rel="noopener" style="color:var(--blue)">🔗 Доказательства</a></div>` : ''}
+      </div>
+      <div class="admin-actions">
+        <input type="number" id="pts_${esc(r.id)}" placeholder="Очки" class="input" style="width:95px; padding:8px;">
+        <button class="btn-primary btn-sm" data-action="approve-report" data-id="${esc(r.id)}" data-uid="${esc(r.uid)}">Одобрить</button>
+        <button class="btn-danger btn-sm" data-action="reject-report" data-id="${esc(r.id)}">Отклонить</button>
+      </div>
+    </div>
+  `).join('') || '<div class="empty">Нет отчётов на проверке</div>';
+
+  return `<div class="card-head"><h2>Проверка отчётов (${state.pendingReports.length})</h2></div>${html}`;
+}
+
+function adminWeekly() {
+  const editor = state.isAdmin ? `
+    <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; margin-bottom:20px; border:1px solid var(--border);">
+      <h3 style="font-family:'Oswald'; margin-bottom:15px;">Добавить задание на эту неделю</h3>
+      <div class="form-row">
+        <input type="text" id="qTitle" class="input" placeholder="Название задания">
+        <input type="number" id="qReward" class="input" placeholder="Награда (очки)">
+      </div>
+      <textarea id="qDesc" class="input" rows="2" placeholder="Описание задания" style="margin-top:10px;"></textarea>
+      <button class="btn-primary" style="margin-top:15px;" data-action="create-quest">Создать</button>
+    </div>` : '';
+
+  const activeQuests = state.quests.map(q => `
+    <div class="admin-item">
+      <div class="admin-info">
+        <div class="admin-name">${esc(q.title)}</div>
+        <div class="admin-sub">${esc(q.desc)} | Награда: ${q.reward} очков</div>
+      </div>
+      ${state.isAdmin ? `<button class="btn-danger btn-sm" data-action="delete-quest" data-id="${esc(q.id)}">Удалить</button>` : ''}
+    </div>
+  `).join('') || '<div class="empty">Заданий на этой неделе нет</div>';
+
+  const claims = state.pendingClaims.map(c => `
+    <div class="admin-item" style="border-color:var(--gold);">
+      <div class="admin-info">
+        <div class="admin-name">${esc(c.userName)}</div>
+        <div class="admin-sub">Задание: <strong>${esc(c.questTitle)}</strong> (+${c.reward} очков)</div>
+        <div style="font-size:12px; margin-top:5px;"><a href="${esc(c.proof)}" target="_blank" rel="noopener" style="color:var(--blue); font-weight:600;">🔗 Доказательства</a></div>
+      </div>
+      <div class="admin-actions">
+        <button class="btn-primary btn-sm" data-action="approve-claim" data-id="${esc(c.id)}" data-uid="${esc(c.uid)}" data-reward="${c.reward}">✓ Подтвердить</button>
+        <button class="btn-danger btn-sm" data-action="reject-claim" data-id="${esc(c.id)}">✕ Отклонить</button>
+      </div>
+    </div>
+  `).join('') || '<div class="empty">Нет заявок на проверку</div>';
+
+  return `
+    <div class="card-head"><h2>Задания недели</h2></div>
+    ${editor}
+    <div style="margin-top:10px;">
+      <h3 style="font-family:'Oswald'; margin-bottom:15px; color:var(--green);">Активные задания (${state.quests.length})</h3>
+      ${activeQuests}
+    </div>
+    <div style="margin-top:30px;">
+      <h3 style="font-family:'Oswald'; margin-bottom:15px; color:var(--gold);">Заявки на выполнение (${state.pendingClaims.length})</h3>
+      ${claims}
+    </div>
+  `;
+}
+
+function adminPrizes() {
+  const html = state.prizes.map(p => `
+    <div class="admin-item">
+      <div class="admin-info">
+        <div class="admin-name">${esc(p.userName)}</div>
+        <div class="admin-sub">Выиграл: <strong style="color:var(--gold)">${esc(p.prizeName)}</strong></div>
+      </div>
+      <button class="btn-primary btn-sm" data-action="give-prize" data-id="${esc(p.id)}">Выдать</button>
+    </div>
+  `).join('') || '<div class="empty">Нет невыданных призов</div>';
+
+  return `<div class="card-head"><h2>Невыданные призы (${state.prizes.length})</h2></div>${html}`;
+}
+
+function adminRanks() {
+  const html = state.rankRequests.map(r => `
+    <div class="admin-item">
+      <div class="admin-info">
+        <div class="admin-name">${esc(r.userName)}</div>
+        <div class="admin-sub">
+          ${esc(r.currentRank || '-')} → <strong style="color:var(--gold)">${esc(r.newRank)}</strong> |
+          <a href="${esc(r.proof)}" target="_blank" rel="noopener" style="color:var(--blue)">Доказательство</a>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <button class="btn-primary btn-sm" data-action="approve-rank" data-id="${esc(r.id)}" data-uid="${esc(r.uid)}" data-rank="${esc(r.newRank)}">Одобрить</button>
+        <button class="btn-danger btn-sm" data-action="reject-rank" data-id="${esc(r.id)}">Отклонить</button>
+      </div>
+    </div>
+  `).join('') || '<div class="empty">Нет заявок на звание</div>';
+
+  return `<div class="card-head"><h2>Заявки на повышение (${state.rankRequests.length})</h2></div>${html}`;
+}
+
+/* ---------------- ДЕЙСТВИЯ ---------------- */
+async function approveUser(uid) {
+  try {
+    await updateDoc(doc(db, 'users', uid), { status: 'approved', approvedAt: Date.now() });
+    toast('Аккаунт одобрен', 'success');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function rejectUser(uid) {
+  try {
+    await updateDoc(doc(db, 'users', uid), { status: 'rejected' });
+    toast('Аккаунт отклонён', 'err');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function toggleMod(uid) {
+  const u = state.users.find(x => x.uid === uid);
+  if (!u) return;
+  try {
+    await updateDoc(doc(db, 'users', uid), { role: u.role === 'moderator' ? 'user' : 'moderator' });
+    toast('Роль изменена', 'gold');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function approveReport(id, uid) {
+  const el = $('pts_' + id);
+  const pts = parseInt(el ? el.value : '', 10);
+  if (!pts || pts <= 0) return toast('Введи количество очков', 'err');
+  try {
+    await updateDoc(doc(db, 'reports', id), {
+      status: 'approved', points: pts, reviewedAt: Date.now(), reviewedBy: state.me.name
+    });
+    await updateDoc(doc(db, 'users', uid), { points: increment(pts) });
+    toast(`Отчёт подтверждён: +${pts} очков`, 'success');
+    confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 }, colors: ['#fbbf24', '#10b981'] });
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function rejectReport(id) {
+  try {
+    await updateDoc(doc(db, 'reports', id), { status: 'rejected', reviewedAt: Date.now(), reviewedBy: state.me.name });
+    toast('Отчёт отклонён', 'err');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function createQuest() {
+  const title = $('qTitle').value.trim();
+  const desc = $('qDesc').value.trim();
+  const reward = parseInt($('qReward').value, 10);
+  if (!title || !desc || !reward || reward <= 0) return toast('Заполни все поля корректно', 'err');
+  try {
+    await addDoc(collection(db, 'quests'), {
+      title: title, desc: desc, reward: reward,
+      week: weekKey(), createdAt: Date.now(), author: state.me.name
+    });
+    toast('Задание создано', 'success');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function deleteQuest(id) {
+  if (!confirm('Удалить это задание?')) return;
+  try {
+    await deleteDoc(doc(db, 'quests', id));
+    toast('Задание удалено', 'err');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function approveClaim(id, uid, reward) {
+  try {
+    await updateDoc(doc(db, 'claims', id), { status: 'approved', reviewedAt: Date.now(), reviewedBy: state.me.name });
+    await updateDoc(doc(db, 'users', uid), { points: increment(Number(reward) || 0) });
+    toast(`Задание одобрено: +${reward} очков`, 'success');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function rejectClaim(id) {
+  try {
+    await updateDoc(doc(db, 'claims', id), { status: 'rejected', reviewedAt: Date.now(), reviewedBy: state.me.name });
+    toast('Заявка отклонена', 'err');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function givePrize(id) {
+  try {
+    await deleteDoc(doc(db, 'prizes', id));
+    toast('Приз выдан!', 'success');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function approveRank(id, uid, rank) {
+  try {
+    await updateDoc(doc(db, 'users', uid), { rank: rank });
+    await deleteDoc(doc(db, 'rankRequests', id));
+    toast('Звание обновлено', 'success');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+async function rejectRank(id) {
+  try {
+    await deleteDoc(doc(db, 'rankRequests', id));
+    toast('Заявка отклонена', 'err');
+    await reload();
+  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
+}
+
+/* ---------------- МОДАЛКИ ---------------- */
+function openModal(id) { $(id).classList.add('open'); }
+function closeModal(id) { $(id).classList.remove('open'); }
+
+function openReportModal() {
+  $('rDate').value = localDateStr(new Date());
+  openModal('reportModal');
+}
+
+function openRankModal() { openModal('rankModal'); }
+
+function openSubmitQuestModal(questId) {
+  currentQuestToSubmit = state.quests.find(q => q.id === questId);
+  if (!currentQuestToSubmit) return;
+  $('sqProof').value = '';
+  openModal('submitQuestModal');
+}
+
+function calcHours(start, end) {
+  if (!start || !end) return 0;
+  const [sh, sm] = start.split(':').map(Number);
+  const [eh, em] = end.split(':').map(Number);
+  let mins = (eh * 60 + em) - (sh * 60 + sm);
+  if (mins < 0) mins += 24 * 60;
+  return mins / 60;
+}
+
+async function submitReport(e) {
+  e.preventDefault();
+  const hours = calcHours($('rStart').value, $('rEnd').value);
+  if (hours <= 0) return toast('Ошибка во времени', 'err');
+  const btn = $('reportSubmitBtn');
+  if (btn) btn.disabled = true;
+  try {
+    await addDoc(collection(db, 'reports'), {
+      uid: state.me.uid,
+      userName: state.me.name,
+      date: $('rDate').value,
+      hours: Math.round(hours * 100) / 100,
+      type: $('rType').value,
+      desc: $('rDesc').value.trim(),
+      proof: $('rProof').value.trim(),
+      points: 0,
+      status: 'pending',
+      createdAt: Date.now()
+    });
+    closeModal('reportModal');
+    $('reportForm').reset();
+    toast('Отчёт отправлен на проверку', 'success');
+    await reload();
+  } catch (err) {
+    toast('Ошибка: ' + err.message, 'err');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function submitQuestProof(e) {
+  e.preventDefault();
+  if (!currentQuestToSubmit) return;
+  const proof = $('sqProof').value.trim();
+  if (!proof) return toast('Введи ссылку', 'err');
+  try {
+    await addDoc(collection(db, 'claims'), {
+      uid: state.me.uid,
+      userName: state.me.name,
+      questId: currentQuestToSubmit.id,
+      questTitle: currentQuestToSubmit.title,
+      reward: currentQuestToSubmit.reward,
+      proof: proof,
+      status: 'pending',
+      createdAt: Date.now()
+    });
+    closeModal('submitQuestModal');
+    toast('Задание отправлено на проверку', 'success');
+    await reload();
+  } catch (err) {
+    toast('Ошибка: ' + err.message, 'err');
+  }
+}
+
+async function submitRankChange(e) {
+  e.preventDefault();
+  try {
+    await addDoc(collection(db, 'rankRequests'), {
+      uid: state.me.uid,
+      userName: state.me.name,
+      currentRank: state.me.rank || '-',
+      newRank: $('reqRank').value,
+      proof: $('reqProof').value.trim(),
+      status: 'pending',
+      createdAt: Date.now()
+    });
+    closeModal('rankModal');
+    toast('Заявка на звание отправлена', 'success');
+    await reload();
+  } catch (err) {
+    toast('Ошибка: ' + err.message, 'err');
+  }
+}
+
+/* ---------------- РУЛЕТКА ---------------- */
+function cardHTML(prize) {
+  const color = prize.rarity === 'legendary' ? 'var(--gold)'
+    : prize.rarity === 'epic' ? 'var(--purple)'
+    : prize.rarity === 'rare' ? 'var(--blue)'
+    : '#64748b';
+  return `
+    <div style="flex:0 0 130px; width:130px; height:150px; margin:0 5px; border-radius:10px; background:rgba(255,255,255,0.05); border:1px solid ${color}; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; box-shadow:0 0 10px ${color}40;">
+      <div style="font-size:30px;">${prize.icon}</div>
+      <div style="font-size:12px; font-weight:700; text-align:center; padding:0 8px;">${prize.name}</div>
+    </div>`;
+}
+
+function renderRoulette() {
+  return `
+    <h1 style="font-family:'Oswald'; font-size:28px; margin-bottom:24px; letter-spacing:1px;">РУЛЕТКА УДАЧИ</h1>
+    <div class="card" style="margin-bottom:24px; padding:30px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-family:'Oswald'; font-size:18px; flex-wrap:wrap; gap:10px;">
+        <div>Стоимость спина: <span style="color:var(--gold);">${SPIN_COST} очков</span></div>
+        <div>Баланс: <span style="color:var(--gold);">${state.me.points || 0}</span></div>
+      </div>
+      <div class="roulette-wrap">
+        <div class="center-line"></div>
+        <div class="marker-top"></div>
+        <div class="marker-bottom"></div>
+        <div id="rouletteTape" style="display:flex; will-change:transform;"></div>
+      </div>
+      <div style="margin-top:30px; text-align:center;">
+        <button class="btn-primary" id="spinBtn" data-action="spin" style="padding:16px 50px; font-size:20px; border-radius:12px; box-shadow:0 0 30px rgba(251,191,36,0.4);">🎰 КРУТИТЬ</button>
+      </div>
+      <p style="margin-top:18px; font-size:12px; color:var(--muted); text-align:center;">
+        Призы сохраняются в базе — выдаст создатель или модератор.
+      </p>
+    </div>
+  `;
+}
+
+function initRouletteTape() {
+  const tape = $('rouletteTape');
+  if (!tape) return;
+  let html = '';
+  for (let i = 0; i < 20; i++) html += cardHTML(PRIZES[Math.floor(Math.random() * PRIZES.length)]);
+  tape.innerHTML = html;
+  tape.style.transform = 'translateX(0)';
+}
+
+async function spinRoulette() {
+  const btn = $('spinBtn');
+  if (btn && btn.disabled) return;
+  if ((state.me.points || 0) < SPIN_COST) return toast(`Нужно ${SPIN_COST} очков`, 'err');
+
+  try {
+    if (btn) btn.disabled = true;
+    await runTransaction(db, async (tx) => {
+      const ref = doc(db, 'users', state.me.uid);
+      const snap = await tx.get(ref);
+      if (!snap.exists()) throw new Error('Профиль не найден');
+      const pts = snap.data().points || 0;
+      if (pts < SPIN_COST) throw new Error('NO_POINTS');
+      tx.update(ref, { points: pts - SPIN_COST });
+    });
+  } catch (err) {
+    if (btn) btn.disabled = false;
+    toast(err.message === 'NO_POINTS' ? `Нужно ${SPIN_COST} очков` : 'Ошибка: ' + err.message, 'err');
+    return;
+  }
+
+  state.me.points = (state.me.points || 0) - SPIN_COST;
+  $('topBalance').textContent = state.me.points;
+
+  const winner = PRIZES[Math.floor(Math.random() * PRIZES.length)];
+  const tape = $('rouletteTape');
+  if (tape) {
+    const slots = [];
+    for (let i = 0; i < 60; i++) slots.push(i === 50 ? winner : PRIZES[Math.floor(Math.random() * PRIZES.length)]);
+    tape.innerHTML = slots.map(cardHTML).join('');
+    tape.style.transition = 'none';
+    tape.style.transform = 'translateX(0px)';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const targetX = -(50 * 140) + 300;
+        tape.style.transition = 'transform 5s cubic-bezier(.14,.72,.16,1)';
+        tape.style.transform = `translateX(${targetX}px)`;
+      });
+    });
+  }
+
+  setTimeout(async () => {
+    if (btn) btn.disabled = false;
+    try {
+      await addDoc(collection(db, 'prizes'), {
+        uid: state.me.uid,
+        userName: state.me.name,
+        prizeName: winner.name,
+        status: 'pending',
+        createdAt: Date.now()
+      });
+    } catch (e) { console.error(e); }
+    confetti({
+      particleCount: 150, spread: 70, origin: { y: 0.6 },
+      colors: ['#fbbf24', '#10b981', '#3b82f6', '#ffffff']
+    });
+    toast(`ВЫ ВЫБИЛИ: <b>${winner.name}</b>`, 'gold');
+    render();
+  }, 5200);
+}
+
+/* ---------------- ДЕЛЕГИРОВАНИЕ КЛИКОВ ---------------- */
+document.addEventListener('click', (e) => {
+  const tab = e.target.closest('.auth-tab');
+  if (tab) { switchAuthTab(tab.dataset.tab); return; }
+
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const action = el.dataset.action;
+  const id = el.dataset.id;
+  const uid = el.dataset.uid;
+
+  if (action === 'logout') return logout();
+  if (action === 'open-report') return openReportModal();
+  if (action === 'open-rank') return openRankModal();
+  if (action === 'open-quest') return openSubmitQuestModal(id);
+  if (action === 'go-admin') { window.location.hash = '#admin'; return; }
+  if (action === 'admin-tab') { currentAdminTab = el.dataset.tab; render(); return; }
+  if (action === 'approve-user') return approveUser(uid);
+  if (action === 'reject-user') return rejectUser(uid);
+  if (action === 'toggle-mod') return toggleMod(uid);
+  if (action === 'approve-report') return approveReport(id, uid);
+  if (action === 'reject-report') return rejectReport(id);
+  if (action === 'create-quest') return createQuest();
+  if (action === 'delete-quest') return deleteQuest(id);
+  if (action === 'approve-claim') return approveClaim(id, uid, el.dataset.reward);
+  if (action === 'reject-claim') return rejectClaim(id);
+  if (action === 'give-prize') return givePrize(id);
+  if (action === 'approve-rank') return approveRank(id, uid, el.dataset.rank);
+  if (action === 'reject-rank') return rejectRank(id);
+  if (action === 'spin') return spinRoulette();
+  if (action === 'close-modal') return closeModal(el.dataset.modal);
+});
+
+/* ---------------- ИНИЦИАЛИЗАЦИЯ UI ---------------- */
+$('loginForm').addEventListener('submit', handleLogin);
+$('registerForm').addEventListener('submit', handleRegister);
+$('reportForm').addEventListener('submit', submitReport);
+$('questForm').addEventListener('submit', submitQuestProof);
+$('rankForm').addEventListener('submit', submitRankChange);
+
+$('regRank').innerHTML = RANKS.map(r => `<option value="${esc(r)}">${esc(r)}</option>`).join('');
+$('reqRank').innerHTML = RANKS.map(r => `<option value="${esc(r)}">${esc(r)}</option>`).join('');
+
+window.addEventListener('hashchange', () => { reload(); });
+
+/* если страница открыта без хеша — на главную */
+if (!window.location.hash) window.location.hash = '#home';
+</script>
 </body>
 </html>
