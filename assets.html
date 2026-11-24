@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LVPD | Activity Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #05080f;
+    --panel: rgba(14, 21, 35, 0.7);
+    --panel-solid: #0e1523;
+    --border: rgba(59, 130, 246, 0.2);
+    --border-hover: rgba(59, 130, 246, 0.6);
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --gold: #fbbf24;
+    --gold-hover: #f59e0b;
+    --blue: #3b82f6;
+    --red: #ef4444;
+    --purple: #a855f7;
+    --green: #10b981;
+  }
+
+  html, body { min-height: 100%; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    width: 50vw; height: 50vw;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.15;
+    animation: pulseBg 10s infinite alternate;
+  }
+  body::before { top: -10%; left: -10%; background: var(--blue); }
+  body::after { bottom: -10%; right: -10%; background: var(--red); animation-delay: -5s; }
+  @keyframes pulseBg {
+    0% { opacity: 0.1; transform: scale(0.9); }
+    100% { opacity: 0.25; transform: scale(1.1); }
+  }
+
+  /* AUTH */
+  .auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+  .auth-card { background: var(--panel); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 20px; padding: 40px; width: 100%; max-width: 440px; box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.05); }
+  .auth-tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+  .auth-tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; color: var(--muted); font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 1px; border-radius: 8px; transition: 0.3s; }
+  .auth-tab.active { color: var(--gold); background: rgba(251,191,36,0.1); text-shadow: 0 0 10px rgba(251,191,36,0.5); }
+
+  /* TOPBAR */
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(16px); background: rgba(5, 8, 15, 0.85); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: 1240px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; flex-shrink: 0; }
+  .shield { display: grid; place-items: center; width: 44px; height: 48px; border-radius: 8px 8px 16px 16px; background: linear-gradient(160deg, var(--gold) 0%, #b45309 100%); color: #1a1206; font-weight: 900; font-size: 12px; letter-spacing: 0.5px; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), inset 0 1px 0 rgba(255,255,255,.5); }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.1; font-family: 'Oswald', sans-serif; }
+  .brand-title { font-weight: 700; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; }
+  .brand-sub { font-size: 11px; color: var(--blue); letter-spacing: 1px; text-transform: uppercase; font-family: 'Inter', sans-serif; font-weight: 600; }
+
+  .nav { display: flex; gap: 6px; margin-left: 8px; flex: 1; overflow-x: auto; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { padding: 8px 16px; border-radius: 8px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; white-space: nowrap; transition: 0.2s; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; }
+  .nav a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .nav a.active { color: var(--text); background: rgba(59, 130, 246, 0.2); box-shadow: inset 0 0 0 1px var(--blue), 0 0 15px rgba(59,130,246,0.3); }
+
+  .user { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+  .balance { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; padding: 6px 16px; border-radius: 12px; background: linear-gradient(180deg, rgba(251,191,36,0.15), rgba(251,191,36,0.05)); border: 1px solid rgba(251,191,36,0.3); box-shadow: 0 0 15px rgba(251,191,36,0.1); }
+  .balance-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 800; }
+  .balance-value { font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 700; color: var(--gold); text-shadow: 0 0 10px rgba(251,191,36,0.4); }
+  .avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-family: 'Oswald', sans-serif; font-size: 16px; background: var(--panel-solid); border: 2px solid var(--border); color: var(--text); transition: 0.3s; cursor: pointer; }
+  .avatar:hover { border-color: var(--blue); box-shadow: 0 0 15px rgba(59,130,246,0.4); }
+
+  .badge-creator { background: linear-gradient(90deg, #fbbf24, #fff, #fbbf24); -webkit-background-clip: text; background-clip: text; color: transparent; font-family: 'Oswald', sans-serif; font-weight: 700; text-shadow: 0 0 20px rgba(251,191,36,.6); letter-spacing: 1px; }
+  .badge-moderator { color: #d8b4fe; font-family: 'Oswald', sans-serif; font-weight: 700; text-shadow: 0 0 15px rgba(168,85,247,.5); letter-spacing: 1px; }
+  .creator-glow { border-color: var(--gold) !important; box-shadow: 0 0 20px rgba(251,191,36,.4) !important; }
+
+  .page { max-width: 1240px; margin: 0 auto; padding: 30px 20px 80px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } .nav { display: none; } }
+
+  .card { background: var(--panel); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: border-color 0.3s; }
+  .card:hover { border-color: var(--border-hover); }
+  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  .card-head h2 { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text); }
+  .card-head h2::before { content: ""; display: inline-block; width: 4px; height: 18px; margin-right: 12px; vertical-align: -3px; border-radius: 2px; background: var(--blue); box-shadow: 0 0 10px var(--blue); }
+
+  .btn-primary, .btn-secondary, .btn-danger, .btn-admin, .btn-sm { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 10px; cursor: pointer; border: none; transition: 0.2s; text-decoration: none; }
+  .btn-primary { color: #05080f; background: linear-gradient(180deg, #fcd34d, #fbbf24 45%, #d97706); box-shadow: 0 4px 15px rgba(251,191,36,.3); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(251,191,36,.5); }
+  .btn-secondary { color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--text); }
+  .btn-danger { color: #fff; background: rgba(239,68,68,.2); border: 1px solid rgba(239,68,68,.5); }
+  .btn-danger:hover { background: rgba(239,68,68,.4); box-shadow: 0 0 15px rgba(239,68,68,.4); }
+  .btn-admin { color: #fff; background: linear-gradient(180deg, #9333ea, #7e22ce); box-shadow: 0 4px 15px rgba(147,51,234,.3); }
+  .btn-admin:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(147,51,234,.5); }
+  .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+  .stat-icon { font-size: 24px; margin-bottom: 8px; }
+  .stat-value { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1.1; text-shadow: 0 0 15px rgba(59,130,246,0.5); }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; font-weight: 600; }
+
+  .report-item { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; transition: 0.2s; }
+  .report-item:hover { border-color: var(--blue); }
+  .report-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+  .report-type { font-family: 'Oswald', sans-serif; font-size: 12px; padding: 4px 12px; border-radius: 6px; background: rgba(59,130,246,.15); color: #93c5fd; font-weight: 600; letter-spacing: 1px; }
+  .report-status { font-size: 11px; padding: 4px 12px; border-radius: 6px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+  .report-status.approved { background: rgba(16,185,129,.15); color: var(--green); }
+  .report-status.pending { background: rgba(251,191,36,.15); color: var(--gold); }
+  .report-status.rejected { background: rgba(239,68,68,.15); color: var(--red); }
+  .report-date { font-size: 13px; color: var(--muted); margin-left: auto; font-weight: 600; }
+  .report-desc { font-size: 14px; margin-bottom: 10px; line-height: 1.5; color: #cbd5e1; }
+
+  .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .admin-tab { padding: 10px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 14px; color: var(--muted); transition: 0.2s; letter-spacing: 0.5px; }
+  .admin-tab.active { background: rgba(59,130,246,0.2); color: var(--text); border-color: var(--blue); box-shadow: 0 0 15px rgba(59,130,246,0.2); }
+
+  .admin-item { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; gap: 15px; flex-wrap: wrap; }
+  .admin-item.pending { border-color: var(--gold); background: rgba(251,191,36,0.05); }
+  .admin-info { flex: 1; min-width: 200px; }
+  .admin-name { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: 0.5px; }
+  .admin-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .admin-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+  .modal { position: fixed; inset: 0; z-index: 100; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+  .modal.open { display: flex; }
+  .modal-card { background: var(--panel-solid); border: 1px solid var(--border); border-radius: 20px; padding: 30px; width: 100%; max-width: 480px; box-shadow: 0 0 50px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(255,255,255,0.05); margin: auto; animation: modalIn 0.3s ease; }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .modal-title { font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 600; margin-bottom: 20px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .input { width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; font-family: 'Inter', sans-serif; transition: 0.2s; }
+  .input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 10px rgba(59,130,246,0.3); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+
+  .toast { position: fixed; right: 24px; bottom: 24px; z-index: 200; max-width: 400px; padding: 16px 20px; border-radius: 12px; background: var(--panel-solid); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-size: 14px; font-weight: 600; opacity: 0; transform: translateY(20px); transition: 0.3s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { border-color: var(--green); box-shadow: 0 0 20px rgba(16,185,129,0.3); }
+  .toast.err { border-color: var(--red); box-shadow: 0 0 20px rgba(239,68,68,0.3); }
+  .toast.gold { border-color: var(--gold); box-shadow: 0 0 30px rgba(251,191,36,0.4); }
+
+  .support-link { color: var(--muted); font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; font-weight: 600; }
+  .support-link:hover { color: var(--text); text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+  .roulette-wrap { position: relative; overflow: hidden; border-radius: 14px; border: 1px solid var(--border); background: rgba(0,0,0,0.5); padding: 16px 0; mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%); -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%); }
+  .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); background: var(--red); box-shadow: 0 0 15px var(--red); z-index: 5; }
+  .marker-top { position: absolute; left: 50%; top: -4px; transform: translateX(-50%); border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 12px solid var(--red); z-index: 6; filter: drop-shadow(0 0 5px var(--red)); }
+  .marker-bottom { position: absolute; left: 50%; bottom: -4px; transform: translateX(-50%); border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 12px solid var(--red); z-index: 6; filter: drop-shadow(0 0 5px var(--red)); }
+
+  .quest-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .quest-title { font-family: 'Oswald'; font-size: 18px; color: var(--gold); margin-bottom: 8px; letter-spacing: 0.5px; }
+  .quest-desc { font-size: 14px; color: var(--muted); margin-bottom: 15px; }
+  .quest-reward { font-weight: 800; color: var(--green); font-size: 16px; margin-bottom: 15px; display: block; }
+
+  /* HERO VIDEO */
+  .hero-video-wrap {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 0 100px rgba(0,0,0,0.5);
+  }
+  .hero-video {
+    position: absolute;
+    top: 50%; left: 50%;
+    min-width: 100%; min-height: 100%;
+    width: auto; height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 1;
+    filter: brightness(0.6) contrast(1.1);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(5,8,15,0.2) 0%, rgba(5,8,15,0.85) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 40px;
+    pointer-events: none;
+  }
+  .hero-content {
+    z-index: 3;
+    pointer-events: auto;
+  }
+  .hero-content h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(59,130,246,0.8), 0 4px 10px rgba(0,0,0,0.9);
+  }
+  .hero-content p {
+    font-size: 16px;
+    color: #cbd5e1;
+    max-width: 500px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.9);
+    font-weight: 600;
+  }
+  /* Мигалка */
+  .siren-flash {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, transparent 0%, var(--blue) 20%, var(--blue) 45%, transparent 50%, var(--red) 55%, var(--red) 80%, transparent 100%);
+    z-index: 10;
+    animation: sirenMove 1.2s infinite linear;
+    opacity: 0.9;
+    box-shadow: 0 0 20px var(--blue), 0 0 20px var(--red);
+  }
+  @keyframes sirenMove {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @media (max-width: 768px) {
+    .hero-video-wrap { height: 250px; }
+    .hero-content h1 { font-size: 28px; }
+    .hero-content { padding: 20px; }
+    .hero-overlay { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="authRoot" class="auth-screen" style="display:none;">
+  <div class="auth-card">
+    <div style="text-align:center; margin-bottom:30px;">
+      <div class="shield" style="margin:0 auto 15px; width:60px; height:65px; font-size:16px;">LVPD</div>
+      <h2 style="font-family:'Oswald'; font-size:24px; letter-spacing:1px;">ВХОД В СИСТЕМУ</h2>
+    </div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuthTab('login')">Вход</div>
+      <div class="auth-tab" onclick="switchAuthTab('register')">Регистрация</div>
+    </div>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Игровой ник</label>
+        <input type="text" id="loginName" class="input" required placeholder="Nickname" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" id="loginPass" class="input" required placeholder="••••••">
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%; margin-top:10px;">Войти</button>
+      <div style="text-align:center; margin-top:20px;">
+        <a href="#" onclick="loginAsGuest(event)" style="color:var(--muted); font-size:13px; font-weight:600; text-decoration:underline;">Войти как гость (только чтение)</a>
+      </div>
+    </form>
+    <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
+      <div class="form-group">
+        <label>Игровой ник</label>
+        <input type="text" id="regName" class="input" required minlength="2" placeholder="Riley Blackwood">
+      </div>
+      <div class="form-group">
+        <label>Статический ID</label>
+        <input type="text" id="regId" class="input" required placeholder="4361956">
+      </div>
+      <div class="form-group">
+        <label>Желаемое звание</label>
+        <select id="regRank" class="input">
+          <option value="Рядовой">Рядовой</option>
+          <option value="Сержант">Сержант</option>
+          <option value="Ст. Сержант">Ст. Сержант</option>
+          <option value="Лейтенант">Лейтенант</option>
+          <option value="Ст. Лейтенант">Ст. Лейтенант</option>
+          <option value="Капитан">Капитан</option>
+          <option value="Майор">Майор</option>
+          <option value="Подполковник">Подполковник</option>
+          <option value="Полковник">Полковник</option>
+          <option value="Шериф">Шериф</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Ссылка на статистику (обязательно)</label>
+        <input type="url" id="regStats" class="input" required placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" id="regPass" class="input" required minlength="4">
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%; margin-top:10px;">Отправить заявку</button>
+    </form>
+  </div>
+</div>
+
+<div id="appRoot" style="display:none;">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#home">
+        <span class="shield">LVPD</span>
+        <span class="brand-text">
+          <span class="brand-title">Activity Hub</span>
+          <span class="brand-sub">Absolute Platinum</span>
+        </span>
+      </a>
+      <nav class="nav" id="mainNav">
+        <a href="#home" id="nav-home">Главная</a>
+        <a href="#reports" id="nav-reports">Отчёты</a>
+        <a href="#roulette" id="nav-roulette">Рулетка</a>
+        <a href="#weekly" id="nav-weekly">Задания</a>
+        <a href="#profile" id="nav-profile">Профиль</a>
+        <a href="#admin" id="nav-admin" style="display:none; color:var(--purple);">Админ-панель</a>
+      </nav>
+      <div class="user">
+        <a href="https://vk.com/morgan.miller" target="_blank" class="support-link">🛠 Тех. поддержка</a>
+        <div class="balance">
+          <span class="balance-label">Очки</span>
+          <span class="balance-value" id="topBalance">0</span>
+        </div>
+        <div class="avatar" id="topAvatar" title="Выйти" onclick="logout()">?</div>
+      </div>
+    </div>
+  </header>
+  <main class="page" id="app"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'lvpd_v7';
+let state = {
+  users: {},
+  currentUser: null,
+  rouletteHistory: [],
+  pendingPrizes: [],
+  rankRequests: [],
+  weeklyQuests: [],
+  weeklyClaims: [],
+  currentWeek: ''
+};
+
+function getWeekKey() {
+  const d = new Date();
+  const day = d.getDay() || 7;
+  d.setDate(d.getDate() - day + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+function checkWeeklyReset() {
+  const wk = getWeekKey();
+  if (state.currentWeek !== wk) {
+    state.currentWeek = wk;
+    state.weeklyClaims = [];
+    saveState();
+  }
+}
+
+function loadState() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) state = JSON.parse(saved);
+  
+  if (!state.users['Riley Blackwood']) {
+    state.users['Riley Blackwood'] = {
+      name: 'Riley Blackwood', pass: 'admin', id: '4361956', rank: 'Полковник',
+      role: 'creator', statsLink: 'vk.com/morgan.miller', status: 'approved',
+      points: 999999, reports: [], lastSeen: 0
+    };
+  }
+  
+  if (!state.currentWeek) state.currentWeek = getWeekKey();
+  
+  if (state.currentWeek !== getWeekKey()) {
+    state.currentWeek = getWeekKey();
+    state.weeklyClaims = [];
+  }
+  
+  saveState();
+}
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+const $ = (id) => document.getElementById(id);
+const escapeHtml = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+const initials = (name) => (name || '?').split(/[\s_.-]+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || '?';
+
+function toast(html, type = '') {
+  const el = $('toast');
+  el.className = 'toast ' + type;
+  el.innerHTML = html;
+  requestAnimationFrame(() => el.classList.add('show'));
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+/* AUTH */
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  if (tab === 'login') {
+    document.querySelectorAll('.auth-tab')[0].classList.add('active');
+    $('loginForm').style.display = 'block';
+    $('registerForm').style.display = 'none';
+  } else {
+    document.querySelectorAll('.auth-tab')[1].classList.add('active');
+    $('loginForm').style.display = 'none';
+    $('registerForm').style.display = 'block';
+  }
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const name = $('loginName').value.trim();
+  const u = state.users[name];
+  if (!u || u.pass !== $('loginPass').value) return toast('Неверный ник или пароль', 'err');
+  if (u.status === 'pending') return toast('Аккаунт еще не одобрен Создателем', 'gold');
+  if (u.status === 'rejected') return toast('Ваша заявка отклонена', 'err');
+  state.currentUser = name;
+  saveState();
+  checkAuth();
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const name = $('regName').value.trim();
+  if (state.users[name]) return toast('Этот ник уже занят', 'err');
+  state.users[name] = {
+    name, pass: $('regPass').value, id: $('regId').value, rank: $('regRank').value,
+    role: 'user', statsLink: $('regStats').value, status: 'pending',
+    points: 0, reports: [], lastSeen: 0
+  };
+  saveState();
+  toast('Заявка отправлена! Ожидайте одобрения.', 'success');
+  switchAuthTab('login');
+}
+
+function loginAsGuest(e) {
+  e.preventDefault();
+  state.currentUser = 'GUEST';
+  saveState();
+  checkAuth();
+}
+
+function logout() {
+  state.currentUser = null;
+  saveState();
+  checkAuth();
+}
+
+function checkAuth() {
+  if (!state.currentUser) {
+    $('authRoot').style.display = 'flex';
+    $('appRoot').style.display = 'none';
+  } else {
+    $('authRoot').style.display = 'none';
+    $('appRoot').style.display = 'block';
+    if (state.currentUser !== 'GUEST') {
+      state.users[state.currentUser].lastSeen = Date.now();
+      saveState();
+    }
+    checkWeeklyReset();
+    render();
+  }
+}
+
+function getCurrentUser() {
+  if (state.currentUser === 'GUEST') return { name: 'Гость', rank: 'Гость', role: 'guest', points: 0, reports: [] };
+  return state.users[state.currentUser];
+}
+
+/* RENDER */
+let currentAdminTab = 'users';
+
+function render() {
+  checkWeeklyReset();
+  const hash = window.location.hash || '#home';
+  const u = getCurrentUser();
+  
+  $('topBalance').textContent = u.points || 0;
+  $('topAvatar').textContent = initials(u.name);
+  
+  if (u.role === 'creator' || u.role === 'moderator') $('nav-admin').style.display = 'block';
+  else $('nav-admin').style.display = 'none';
+
+  document.querySelectorAll('.nav a').forEach(a => {
+    if (a.getAttribute('href') === hash) a.classList.add('active');
+    else a.classList.remove('active');
+  });
+
+  const app = $('app');
+  if (hash === '#home') app.innerHTML = renderHome();
+  else if (hash === '#reports') app.innerHTML = renderReports();
+  else if (hash === '#roulette') { app.innerHTML = renderRoulette(); initRouletteTape(); }
+  else if (hash === '#weekly') app.innerHTML = renderWeekly();
+  else if (hash === '#profile') app.innerHTML = renderProfile();
+  else if (hash === '#admin') app.innerHTML = renderAdmin();
+  else app.innerHTML = renderHome();
+}
+
+function renderHome() {
+  const u = getCurrentUser();
+  const isCreator = u.role === 'creator';
+  return `
+    <!-- ВИДЕО-ПОГОНЯ -->
+    <div class="hero-video-wrap">
+      <video class="hero-video" autoplay loop muted playsinline>
+        <!-- Бесплатное видео ночной погони с мигалками (Pexels) -->
+        <source src="https://videos.pexels.com/video-files/853800/853800-hd_1920_1080_30fps.mp4" type="video/mp4">
+      </video>
+      <div class="siren-flash"></div>
+      <div class="hero-overlay">
+        <div class="hero-content">
+          <h1 class="${isCreator ? 'badge-creator' : ''}" style="color:#fff;">
+            ${isCreator ? '👑 ДОБРО ПОЖАЛОВАТЬ, СОЗДАТЕЛЬ' : 'ПРИВЕТСТВУЕМ, ' + escapeHtml(u.name).toUpperCase()}
+          </h1>
+          <p>Система управления активностью фракции LVPD • Absolute Platinum</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <section class="card">
+        <div class="card-head"><h2>Оперативная сводка</h2></div>
+        <p style="font-size:15px; color:var(--muted); line-height:1.6; margin-bottom:20px;">
+          Добро пожаловать на портал LVPD. Здесь вы можете сдавать отчёты о сменах, крутить рулетку, выполнять задания и получать звания.
+        </p>
+        <div style="display:flex; gap:15px; flex-wrap:wrap;">
+          ${u.role === 'guest' ? '<button class="btn-primary" onclick="logout()">Войти в систему</button>' : '<button class="btn-primary" onclick="openReportModal()">Сдать отчёт</button>'}
+          <a href="#roulette" class="btn-secondary">В рулетку</a>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>Статус дежурства</h2></div>
+        <div class="admin-item" style="margin-bottom:0; background:rgba(59,130,246,0.05); border-color:var(--blue);">
+          <div class="admin-info">
+            <div class="admin-name ${isCreator ? 'badge-creator' : ''}">${escapeHtml(u.name)} ${isCreator ? '👑' : (u.role === 'moderator' ? '🛡' : '')}</div>
+            <div class="admin-sub">Звание: ${escapeHtml(u.rank)} | ID: ${escapeHtml(u.id || '-')}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:20px; color:var(--green); font-weight:800;">🟢 НА СВЯЗИ</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+function renderProfile() {
+  const u = getCurrentUser();
+  if (u.role === 'guest') return `<div class="card empty">Гостевой режим. Войдите для просмотра.</div>`;
+  
+  const isCreator = u.role === 'creator';
+  const isMod = u.role === 'moderator';
+  let badge = isCreator ? `<span class="badge-creator" style="font-size:20px; margin-left:15px;">👑 СОЗДАТЕЛЬ</span>` : (isMod ? `<span class="badge-moderator" style="font-size:20px; margin-left:15px;">🛡 МОДЕРАТОР</span>` : '');
+
+  return `
+    <div class="card" style="display:flex; gap:24px; align-items:center; flex-wrap:wrap; ${isCreator ? 'border-color:var(--gold); box-shadow:0 0 40px rgba(251,191,36,.15);' : ''}">
+      <div class="avatar" style="width:90px; height:90px; font-size:30px; border:3px solid ${isCreator ? 'var(--gold)' : 'var(--border)'};">${initials(u.name)}</div>
+      <div style="flex:1;">
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h1 style="font-family:'Oswald'; font-size:32px; font-weight:700; letter-spacing:1px;">${escapeHtml(u.name).toUpperCase()}</h1>
+          ${badge}
+        </div>
+        <div style="color:var(--muted); font-size:15px; margin-top:8px;">
+          Звание: <strong style="color:var(--text);">${escapeHtml(u.rank)}</strong> | ID: <strong style="color:var(--text);">${escapeHtml(u.id || '-')}</strong>
+        </div>
+      </div>
+      <div class="balance" style="padding:20px 30px; border-radius:16px;">
+        <span class="balance-label">Баланс очков</span>
+        <span class="balance-value" style="font-size:36px;">${u.points}</span>
+      </div>
+    </div>
+
+    <div class="stats-grid" style="margin-top:24px;">
+      <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-value">${u.reports.filter(r=>r.status==='approved').reduce((s,r)=>s+r.hours,0)}</div><div class="stat-label">Часов</div></div>
+      <div class="stat-card"><div class="stat-icon">💼</div><div class="stat-value">${u.reports.filter(r=>r.status==='approved').length}</div><div class="stat-label">Смен</div></div>
+      <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value">${u.reports.length}</div><div class="stat-label">Отчётов</div></div>
+      <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-value">${u.reports.filter(r=>r.status==='pending').length}</div><div class="stat-label">На проверке</div></div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+      <div class="card-head"><h2>Действия</h2></div>
+      <div style="display:flex; gap:15px; flex-wrap:wrap;">
+        <button class="btn-secondary" onclick="openRankChangeModal()">📈 Запросить повышение</button>
+        ${isCreator ? `<button class="btn-admin" onclick="location.hash='#admin'">Перейти в Админ-панель</button>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderReports() {
+  const u = getCurrentUser();
+  if (u.role === 'guest') return `<div class="card empty">Гостям недоступно.</div>`;
+  
+  let html = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:15px;">
+    <h1 style="font-family:'Oswald'; font-size:28px; letter-spacing:1px;">МОИ ОТЧЁТЫ</h1>
+    <button class="btn-primary" onclick="openReportModal()">+ Сдать отчёт</button>
+  </div>`;
+
+  if (!u.reports.length) return html + `<div class="card empty">Отчётов пока нет.</div>`;
+
+  html += u.reports.map(r => `
+    <div class="report-item">
+      <div class="report-top">
+        <span class="report-type">${escapeHtml(r.type)}</span>
+        <span class="report-status ${r.status}">
+          ${r.status === 'approved' ? '✓ Проверен' : r.status === 'pending' ? '⏳ На проверке' : '✕ Отклонён'}
+        </span>
+        ${r.status === 'approved' ? `<span style="color:var(--gold); font-weight:800; font-family:'Oswald';">+${r.points} ОЧКОВ</span>` : ''}
+        <span class="report-date">${new Date(r.date).toLocaleDateString('ru-RU')} | ${r.hours}ч</span>
+      </div>
+      <div class="report-desc">${escapeHtml(r.desc)}</div>
+      ${r.proof ? `<div style="font-size:12px; margin-top:10px;"><a href="${escapeHtml(r.proof)}" target="_blank" style="color:var(--blue); font-weight:600;">🔗 Ссылка на доказательства</a></div>` : ''}
+    </div>
+  `).join('');
+  return html;
+}
+
+function renderWeekly() {
+  const u = getCurrentUser();
+  if (u.role === 'guest') return `<div class="card empty">Гостям недоступно.</div>`;
+
+  const myClaims = state.weeklyClaims.filter(c => c.userName === u.name);
+  
+  let questsHtml = state.weeklyQuests.map(q => {
+    const claim = myClaims.find(c => c.questId === q.id);
+    
+    let action = '';
+    if (claim) {
+      if (claim.status === 'approved') action = `<div style="color:var(--green); font-weight:800;">✓ ВЫПОЛНЕНО (+${q.reward} очков)</div>`;
+      else if (claim.status === 'pending') action = `<div style="color:var(--gold); font-weight:800;">⏳ НА ПРОВЕРКЕ</div>`;
+      else action = `<div style="color:var(--red); font-weight:800;">✕ ОТКЛОНЕНО</div>`;
+    } else {
+      action = `<button class="btn-primary" onclick="openSubmitQuestModal('${q.id}')">Отправить на проверку</button>`;
+    }
+
+    return `
+      <div class="quest-card">
+        <div class="quest-title">${escapeHtml(q.title)}</div>
+        <div class="quest-desc">${escapeHtml(q.desc)}</div>
+        <span class="quest-reward">Награда: +${q.reward} очков</span>
+        ${action}
+      </div>
+    `;
+  }).join('') || '<div class="empty">Заданий на эту неделю пока нет.</div>';
+
+  return `
+    <h1 style="font-family:'Oswald'; font-size:28px; margin-bottom:24px; letter-spacing:1px;">ЕЖЕНЕДЕЛЬНЫЕ ЗАДАНИЯ</h1>
+    <p style="color:var(--muted); margin-bottom:20px; font-size:14px;">Задания обновляются каждый понедельник. Прикрепите ссылку на доказательство (скриншот) при отправке.</p>
+    <div class="grid-2" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+      ${questsHtml}
+    </div>
+  `;
+}
+
+/* ADMIN PANEL */
+function renderAdmin() {
+  const u = getCurrentUser();
+  if (u.role !== 'creator' && u.role !== 'moderator') return '<div class="card">Доступ запрещен</div>';
+
+  let content = '';
+  if (currentAdminTab === 'users') {
+    const allUsers = Object.values(state.users);
+    const pendingUsers = allUsers.filter(x => x.status === 'pending');
+    const otherUsers = allUsers.filter(x => x.status !== 'pending');
+
+    let usersHtml = '';
+    if (pendingUsers.length) {
+      usersHtml += `<div style="margin-bottom:20px;"><h3 style="font-family:'Oswald'; color:var(--gold); margin-bottom:12px;">⏳ Ожидают подтверждения (${pendingUsers.length})</h3>`;
+      usersHtml += pendingUsers.map(user => `
+        <div class="admin-item pending">
+          <div class="admin-info">
+            <div class="admin-name">${escapeHtml(user.name)}</div>
+            <div class="admin-sub">${escapeHtml(user.rank)} | ID: ${escapeHtml(user.id)} | Стата: <a href="${escapeHtml(user.statsLink)}" target="_blank" style="color:var(--blue)">Ссылка</a></div>
+          </div>
+          <div class="admin-actions">
+            <button class="btn-primary btn-sm" onclick="approveUser('${user.name}')">✓ Одобрить</button>
+            <button class="btn-danger btn-sm" onclick="rejectUser('${user.name}')">✕ Отклонить</button>
+          </div>
+        </div>
+      `).join('');
+      usersHtml += `</div>`;
+    }
+    usersHtml += `<div><h3 style="font-family:'Oswald'; color:var(--green); margin-bottom:12px;">✅ Одобренные аккаунты (${otherUsers.length})</h3>`;
+    usersHtml += otherUsers.map(user => {
+      const isMod = user.role === 'moderator';
+      const isCreator = user.role === 'creator';
+      let actions = '';
+      if (isCreator) actions = '<span style="color:var(--gold); font-weight:800;">СОЗДАТЕЛЬ</span>';
+      else if (u.role === 'creator') {
+        actions = `<button class="btn-secondary btn-sm" onclick="toggleMod('${user.name}')">${isMod ? 'Снять модератора' : 'Сделать модером'}</button>`;
+      }
+      return `
+        <div class="admin-item">
+          <div class="admin-info">
+            <div class="admin-name">${escapeHtml(user.name)} ${isCreator ? '👑' : (isMod ? '🛡' : '')}</div>
+            <div class="admin-sub">${escapeHtml(user.rank)} | ID: ${escapeHtml(user.id)} | ${user.status === 'approved' ? '<span style="color:var(--green)">Одобрен</span>' : '<span style="color:var(--red)">Отклонен</span>'}</div>
+          </div>
+          <div class="admin-actions">${actions}</div>
+        </div>`;
+    }).join('');
+    usersHtml += `</div>`;
+    content = `<div class="card-head"><h2>Управление аккаунтами</h2></div>${usersHtml}`;
+  } 
+  else if (currentAdminTab === 'reports') {
+    let allReports = [];
+    Object.values(state.users).forEach(user => {
+      user.reports.filter(r => r.status === 'pending').forEach(r => allReports.push({...r, userName: user.name}));
+    });
+    const html = allReports.map(r => `
+      <div class="admin-item">
+        <div class="admin-info">
+          <div class="admin-name">${escapeHtml(r.userName)}</div>
+          <div class="admin-sub">${r.date} | ${r.hours}ч | ${escapeHtml(r.desc)}</div>
+          ${r.proof ? `<div style="font-size:12px; margin-top:5px;"><a href="${escapeHtml(r.proof)}" target="_blank" style="color:var(--blue)">🔗 Доказательства</a></div>` : ''}
+        </div>
+        <div class="admin-actions">
+          <input type="number" id="pts_${r.id}" placeholder="Очки" class="input" style="width:90px; padding:8px;">
+          <button class="btn-primary btn-sm" onclick="approveReport('${r.userName}', '${r.id}')">Одобрить</button>
+          <button class="btn-danger btn-sm" onclick="rejectReport('${r.userName}', '${r.id}')">Отклонить</button>
+        </div>
+      </div>
+    `).join('') || '<div class="empty">Нет отчётов на проверке</div>';
+    content = `<div class="card-head"><h2>Проверка отчётов (${allReports.length})</h2></div>${html}`;
+  }
+  else if (currentAdminTab === 'weekly') {
+    const myClaims = state.weeklyClaims.filter(c => c.status === 'pending');
+    
+    let editor = `
+      <div style="background:rgba(255,255,255,0.02); padding:20px; border-radius:12px; margin-bottom:20px; border:1px solid var(--border);">
+        <h3 style="font-family:'Oswald'; margin-bottom:15px;">Добавить задание</h3>
+        <div class="form-row">
+          <input type="text" id="qTitle" class="input" placeholder="Название задания">
+          <input type="number" id="qReward" class="input" placeholder="Награда (очки)">
+        </div>
+        <textarea id="qDesc" class="input" rows="2" placeholder="Описание задания" style="margin-top:10px;"></textarea>
+        <button class="btn-primary" style="margin-top:15px;" onclick="createQuest()">Создать</button>
+      </div>
+    `;
+
+    let activeQuests = state.weeklyQuests.map(q => `
+      <div class="admin-item">
+        <div class="admin-info">
+          <div class="admin-name">${escapeHtml(q.title)}</div>
+          <div class="admin-sub">${escapeHtml(q.desc)} | Награда: ${q.reward} очков</div>
+        </div>
+        <button class="btn-danger btn-sm" onclick="deleteQuest('${q.id}')">Удалить</button>
+      </div>
+    `).join('') || '<div class="empty">Заданий пока нет</div>';
+
+    let claimsHtml = myClaims.map(c => `
+      <div class="admin-item" style="border-color:var(--gold);">
+        <div class="admin-info">
+          <div class="admin-name">${escapeHtml(c.userName)}</div>
+          <div class="admin-sub">Задание: <strong>${escapeHtml(c.questTitle)}</strong></div>
+          <div style="font-size:12px; margin-top:5px;"><a href="${escapeHtml(c.proof)}" target="_blank" style="color:var(--blue); font-weight:600;">🔗 Доказательства</a></div>
+        </div>
+        <div class="admin-actions">
+          <button class="btn-primary btn-sm" onclick="approveQuestClaim('${c.id}')">✓ Подтвердить</button>
+          <button class="btn-danger btn-sm" onclick="rejectQuestClaim('${c.id}')">✕ Отклонить</button>
+        </div>
+      </div>
+    `).join('') || '<div class="empty">Нет заявок на проверку</div>';
+
+    content = `
+      <div class="card-head"><h2>Редактор заданий</h2></div>
+      ${editor}
+      <div style="margin-top:30px;">
+        <h3 style="font-family:'Oswald'; margin-bottom:15px; color:var(--green);">Активные задания</h3>
+        ${activeQuests}
+      </div>
+      <div style="margin-top:30px;">
+        <h3 style="font-family:'Oswald'; margin-bottom:15px; color:var(--gold);">Заявки на выполнение (${myClaims.length})</h3>
+        ${claimsHtml}
+      </div>
+    `;
+  }
+  else if (currentAdminTab === 'prizes') {
+    const html = state.pendingPrizes.map((p, i) => `
+      <div class="admin-item">
+        <div class="admin-info">
+          <div class="admin-name">${escapeHtml(p.userName)}</div>
+          <div class="admin-sub">Выиграл: <strong style="color:var(--gold)">${escapeHtml(p.prizeName)}</strong></div>
+        </div>
+        <button class="btn-primary btn-sm" onclick="givePrize(${i})">Выдать</button>
+      </div>
+    `).join('') || '<div class="empty">Нет невыданных призов</div>';
+    content = `<div class="card-head"><h2>Невыданные призы (${state.pendingPrizes.length})</h2></div>${html}`;
+  }
+  else if (currentAdminTab === 'ranks') {
+    const html = state.rankRequests.map((r, i) => `
+      <div class="admin-item">
+        <div class="admin-info">
+          <div class="admin-name">${escapeHtml(r.userName)}</div>
+          <div class="admin-sub">Хочет звание: <strong>${escapeHtml(r.newRank)}</strong> | <a href="${escapeHtml(r.proof)}" target="_blank" style="color:var(--blue)">Доказательство</a></div>
+        </div>
+        <div class="admin-actions">
+          <button class="btn-primary btn-sm" onclick="approveRank(${i})">Одобрить</button>
+          <button class="btn-danger btn-sm" onclick="rejectRank(${i})">Отклонить</button>
+        </div>
+      </div>
+    `).join('') || '<div class="empty">Нет заявок на звание</div>';
+    content = `<div class="card-head"><h2>Заявки на повышение (${state.rankRequests.length})</h2></div>${html}`;
+  }
+
+  return `
+    <h1 style="font-family:'Oswald'; font-size:28px; margin-bottom:20px; color:var(--purple); letter-spacing:1px;">ПАНЕЛЬ УПРАВЛЕНИЯ</h1>
+    <div class="admin-tabs">
+      <div class="admin-tab ${currentAdminTab === 'users' ? 'active' : ''}" onclick="switchAdminTab('users')">Пользователи</div>
+      <div class="admin-tab ${currentAdminTab === 'reports' ? 'active' : ''}" onclick="switchAdminTab('reports')">Отчёты</div>
+      <div class="admin-tab ${currentAdminTab === 'weekly' ? 'active' : ''}" onclick="switchAdminTab('weekly')">Задания</div>
+      <div class="admin-tab ${currentAdminTab === 'prizes' ? 'active' : ''}" onclick="switchAdminTab('prizes')">Призы</div>
+      <div class="admin-tab ${currentAdminTab === 'ranks' ? 'active' : ''}" onclick="switchAdminTab('ranks')">Звания</div>
+    </div>
+    <div class="card">${content}</div>
+  `;
+}
+
+function switchAdminTab(tab) { currentAdminTab = tab; render(); }
+
+/* ACTIONS */
+function approveUser(name) {
+  state.users[name].status = 'approved';
+  saveState();
+  toast(`Аккаунт ${name} одобрен!`, 'success');
+  render();
+}
+
+function rejectUser(name) {
+  state.users[name].status = 'rejected';
+  saveState();
+  toast(`Аккаунт ${name} отклонен`, 'err');
+  render();
+}
+
+function toggleMod(name) {
+  const u = state.users[name];
+  u.role = u.role === 'moderator' ? 'user' : 'moderator';
+  saveState(); render(); toast(`Роль изменена`, 'gold');
+}
+
+function approveReport(userName, reportId) {
+  const pts = parseInt($(`pts_${reportId}`).value);
+  if (!pts || pts < 0) return toast('Введите корректное количество очков', 'err');
+  const u = state.users[userName];
+  const report = u.reports.find(r => r.id === reportId);
+  report.status = 'approved';
+  report.points = pts;
+  u.points += pts;
+  saveState(); render(); toast(`Отчёт подтвержден. +${pts} очков.`, 'success');
+}
+
+function rejectReport(userName, reportId) {
+  const u = state.users[userName];
+  u.reports.find(r => r.id === reportId).status = 'rejected';
+  saveState(); render(); toast('Отчёт отклонен', 'err');
+}
+
+function createQuest() {
+  const title = $('qTitle').value.trim();
+  const desc = $('qDesc').value.trim();
+  const reward = parseInt($('qReward').value);
+  if (!title || !desc || !reward || reward <= 0) return toast('Заполните все поля корректно', 'err');
+  
+  state.weeklyQuests.push({
+    id: Date.now().toString(),
+    title, desc, reward
+  });
+  saveState();
+  render();
+  toast('Задание создано', 'success');
+}
+
+function deleteQuest(id) {
+  if (!confirm('Удалить это задание?')) return;
+  state.weeklyQuests = state.weeklyQuests.filter(q => q.id !== id);
+  saveState(); render();
+  toast('Задание удалено', 'err');
+}
+
+function approveQuestClaim(claimId) {
+  const claim = state.weeklyClaims.find(c => c.id === claimId);
+  if (!claim) return;
+  claim.status = 'approved';
+  const quest = state.weeklyQuests.find(q => q.id === claim.questId);
+  if (quest) {
+    state.users[claim.userName].points += quest.reward;
+  }
+  saveState(); render();
+  toast(`Задание одобрено! +${quest ? quest.reward : 0} очков игроку ${claim.userName}`, 'success');
+}
+
+function rejectQuestClaim(claimId) {
+  const claim = state.weeklyClaims.find(c => c.id === claimId);
+  if (!claim) return;
+  claim.status = 'rejected';
+  saveState(); render();
+  toast('Заявка отклонена', 'err');
+}
+
+function givePrize(idx) {
+  state.pendingPrizes.splice(idx, 1);
+  saveState(); render(); toast('Приз выдан!', 'success');
+}
+
+function approveRank(idx) {
+  const req = state.rankRequests[idx];
+  state.users[req.userName].rank = req.newRank;
+  state.rankRequests.splice(idx, 1);
+  saveState(); render(); toast('Звание обновлено', 'success');
+}
+
+function rejectRank(idx) {
+  state.rankRequests.splice(idx, 1);
+  saveState(); render(); toast('Заявка отклонена', 'err');
+}
+
+function openReportModal() {
+  const u = getCurrentUser();
+  if (u.role === 'guest') return toast('Войдите, чтобы сдавать отчёты', 'err');
+  document.getElementById('reportModal').classList.add('open');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function submitReport(e) {
+  e.preventDefault();
+  const u = getCurrentUser();
+  const hours = calcHours($('rStart').value, $('rEnd').value);
+  if (hours <= 0) return toast('Ошибка во времени.', 'err');
+
+  const report = {
+    id: Date.now().toString(),
+    date: $('rDate').value,
+    hours: Math.round(hours * 100) / 100,
+    type: $('rType').value,
+    desc: $('rDesc').value.trim(),
+    proof: $('rProof').value.trim(),
+    points: 0,
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  };
+
+  u.reports.unshift(report);
+  saveState();
+  closeModal('reportModal');
+  toast('Отчёт отправлен на проверку.', 'success');
+  render();
+}
+
+function calcHours(start, end) {
+  if (!start || !end) return 0;
+  const [sh, sm] = start.split(':').map(Number);
+  const [eh, em] = end.split(':').map(Number);
+  let mins = (eh * 60 + em) - (sh * 60 + sm);
+  if (mins < 0) mins += 24 * 60;
+  return mins / 60;
+}
+
+/* SUBMIT QUEST MODAL */
+let currentQuestToSubmit = null;
+function openSubmitQuestModal(questId) {
+  currentQuestToSubmit = state.weeklyQuests.find(q => q.id === questId);
+  if (!currentQuestToSubmit) return;
+  $('sqProof').value = '';
+  document.getElementById('submitQuestModal').classList.add('open');
+}
+
+function submitQuestProof(e) {
+  e.preventDefault();
+  const u = getCurrentUser();
+  const proof = $('sqProof').value.trim();
+  if (!proof) return toast('Введите ссылку', 'err');
+
+  state.weeklyClaims.push({
+    id: Date.now().toString(),
+    userName: u.name,
+    questId: currentQuestToSubmit.id,
+    questTitle: currentQuestToSubmit.title,
+    proof,
+    date: new Date().toISOString(),
+    status: 'pending'
+  });
+  saveState();
+  closeModal('submitQuestModal');
+  render();
+  toast('Задание отправлено на проверку', 'success');
+}
+
+function openRankChangeModal() { document.getElementById('rankModal').classList.add('open'); }
+
+function submitRankChange(e) {
+  e.preventDefault();
+  const u = getCurrentUser();
+  state.rankRequests.push({
+    id: Date.now(),
+    userName: u.name,
+    currentRank: u.rank,
+    newRank: $('reqRank').value,
+    proof: $('reqProof').value
+  });
+  saveState();
+  closeModal('rankModal');
+  toast('Заявка на звание отправлена', 'success');
+}
+
+/* ROULETTE */
+const PRIZES = [
+  { name: '5 000 $', icon: '💵', rarity: 'common' }, { name: '10 000 $', icon: '💵', rarity: 'common' },
+  { name: '30 000 $', icon: '💰', rarity: 'rare' }, { name: '50 000 $', icon: '💰', rarity: 'rare' },
+  { name: '100 000 $', icon: '💎', rarity: 'epic' }, { name: '300 000 $', icon: '👑', rarity: 'legendary' },
+  { name: 'Приз от Создателя', icon: '🏆', rarity: 'legendary' }
+];
+
+function cardHTML(prize) {
+  let color = prize.rarity === 'legendary' ? 'var(--gold)' : prize.rarity === 'epic' ? 'var(--purple)' : prize.rarity === 'rare' ? 'var(--blue)' : 'var(--gray)';
+  return `
+    <div style="flex:0 0 130px; width:130px; height:150px; margin:0 5px; border-radius:10px; background:rgba(255,255,255,0.05); border:1px solid ${color}; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; box-shadow:0 0 10px ${color}40;">
+      <div style="font-size:30px;">${prize.icon}</div>
+      <div style="font-size:12px; font-weight:700; text-align:center; padding:0 8px;">${prize.name}</div>
+    </div>`;
+}
+
+function renderRoulette() {
+  const u = getCurrentUser();
+  return `
+    <h1 style="font-family:'Oswald'; font-size:28px; margin-bottom:24px; letter-spacing:1px;">РУЛЕТКА УДАЧИ</h1>
+    <div class="card" style="margin-bottom:24px; padding:30px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-family:'Oswald'; font-size:18px;">
+        <div>Стоимость спина: <span style="color:var(--gold);">50 очков</span></div>
+        <div>Баланс: <span style="color:var(--gold);">${u.points}</span></div>
+      </div>
+      <div class="roulette-wrap">
+        <div class="center-line"></div>
+        <div class="marker-top"></div>
+        <div class="marker-bottom"></div>
+        <div class="tape" id="rouletteTape" style="display:flex; will-change:transform;"></div>
+      </div>
+      <div style="margin-top:30px; text-align:center;">
+        <button class="btn-primary" id="spinBtn" onclick="spinRoulette()" style="padding:16px 50px; font-size:20px; border-radius:12px; box-shadow:0 0 30px rgba(251,191,36,0.4);">🎰 КРУТИТЬ</button>
+      </div>
+    </div>
+  `;
+}
+
+function initRouletteTape() {
+  const tape = $('rouletteTape');
+  if (!tape) return;
+  let html = '';
+  for (let i = 0; i < 20; i++) html += cardHTML(PRIZES[Math.floor(Math.random() * PRIZES.length)]);
+  tape.innerHTML = html;
+  tape.style.transform = 'translateX(0)';
+}
+
+function spinRoulette() {
+  const u = getCurrentUser();
+  if (u.role === 'guest') return toast('Войдите в аккаунт', 'err');
+  if (u.points < 50) return toast('Нужно 50 очков', 'err');
+
+  const btn = $('spinBtn');
+  if (btn.disabled) return;
+  btn.disabled = true;
+
+  u.points -= 50;
+  saveState();
+  $('topBalance').textContent = u.points;
+
+  const winner = PRIZES[Math.floor(Math.random() * PRIZES.length)];
+  const tape = $('rouletteTape');
+  
+  let slots = [];
+  for (let i = 0; i < 60; i++) slots.push(i === 50 ? winner : PRIZES[Math.floor(Math.random() * PRIZES.length)]);
+  tape.innerHTML = slots.map(cardHTML).join('');
+
+  tape.style.transition = 'none';
+  tape.style.transform = 'translateX(0px)';
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const targetX = -(50 * 140) + 300; 
+      tape.style.transition = 'transform 5s cubic-bezier(.14,.72,.16,1)';
+      tape.style.transform = `translateX(${targetX}px)`;
+    });
+  });
+
+  setTimeout(() => {
+    btn.disabled = false;
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#fbbf24', '#10b981', '#3b82f6', '#ffffff']
+    });
+    toast(`ВЫ ВЫБИЛИ: <b>${winner.name}</b>`, 'gold');
+    
+    state.rouletteHistory.unshift({ userName: u.name, prize: winner.name, date: Date.now() });
+    state.pendingPrizes.push({ userName: u.name, prizeName: winner.name, date: Date.now() });
+    saveState();
+  }, 5200);
+}
+
+/* INIT */
+window.addEventListener('hashchange', render);
+setInterval(() => {
+  if (state.currentUser && state.currentUser !== 'GUEST') {
+    state.users[state.currentUser].lastSeen = Date.now();
+    saveState();
+  }
+}, 30000);
+
+loadState();
+checkAuth();
+</script>
+
+<!-- REPORT MODAL -->
+<div class="modal" id="reportModal">
+  <div class="modal-card">
+    <h2 class="modal-title">Сдать отчёт</h2>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Очки будут начислены модератором после проверки.</p>
+    <form id="reportForm" onsubmit="submitReport(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Дата смены</label>
+          <input type="date" id="rDate" class="input" required>
+        </div>
+        <div class="form-group">
+          <label>Тип смены</label>
+          <select id="rType" class="input">
+            <option>Патруль</option>
+            <option>Пост</option>
+            <option>Спец. операция</option>
+            <option>Другое</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Время начала</label>
+          <input type="time" id="rStart" class="input" required value="20:00">
+        </div>
+        <div class="form-group">
+          <label>Время конца</label>
+          <input type="time" id="rEnd" class="input" required value="23:00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Описание деятельности</label>
+        <textarea id="rDesc" class="input" rows="3" required minlength="10" placeholder="Что делал на смене..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Ссылка на доказательства (обязательно)</label>
+        <input type="url" id="rProof" class="input" required placeholder="https://imgur.com/...">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeModal('reportModal')">Отмена</button>
+        <button type="submit" class="btn-primary">Отправить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- RANK MODAL -->
+<div class="modal" id="rankModal">
+  <div class="modal-card">
+    <h2 class="modal-title">Запрос на повышение</h2>
+    <form onsubmit="submitRankChange(event)">
+      <div class="form-group">
+        <label>Желаемое звание</label>
+        <select id="reqRank" class="input">
+          <option value="Рядовой">Рядовой</option>
+          <option value="Сержант">Сержант</option>
+          <option value="Ст. Сержант">Ст. Сержант</option>
+          <option value="Лейтенант">Лейтенант</option>
+          <option value="Ст. Лейтенант">Ст. Лейтенант</option>
+          <option value="Капитан">Капитан</option>
+          <option value="Майор">Майор</option>
+          <option value="Подполковник">Подполковник</option>
+          <option value="Полковник">Полковник</option>
+          <option value="Шериф">Шериф</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Ссылка на доказательства</label>
+        <input type="url" id="reqProof" class="input" required placeholder="https://imgur.com/...">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeModal('rankModal')">Отмена</button>
+        <button type="submit" class="btn-primary">Отправить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- SUBMIT QUEST MODAL -->
+<div class="modal" id="submitQuestModal">
+  <div class="modal-card">
+    <h2 class="modal-title">Подтверждение выполнения</h2>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Прикрепите ссылку на скриншот или видео доказательство.</p>
+    <form onsubmit="submitQuestProof(event)">
+      <div class="form-group">
+        <label>Ссылка на доказательства</label>
+        <input type="url" id="sqProof" class="input" required placeholder="https://imgur.com/...">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeModal('submitQuestModal')">Отмена</button>
+        <button type="submit" class="btn-primary">Отправить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
